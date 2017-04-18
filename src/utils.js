@@ -8,7 +8,7 @@ const stringEscapeMarkup = (textString, escapeSpaces, convertToHtmlUnicodeEscape
 const stringFormat = (textToFormat, parameters) => {};
 const stringIndexReplace = (text, start, size, replacementText) => {};
 const stringInitCap = (text) => {};
-const stringLeft = (text, size) => (text || '').substr(0, i_size);
+const stringLeft = (text, size) => (text || '').substr(0, size);
 const stringLeftWords = (text, numberOfWords) => {};
 const stringMD5HashBase16 = (textString) => {};
 const stringMD5HashBase64 = (textString) => {};
