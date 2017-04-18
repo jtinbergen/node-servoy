@@ -63,10 +63,10 @@ class PostgresServer {
         return new Promise(async (resolve) => {
             let done = false;
             while (!done) {
-                const client = this.availableConnections.pop();
-                if (client) {
+                const availableClient = this.availableConnections.pop();
+                if (availableClient) {
                     done = true;
-                    resolve(client);
+                    resolve(availableClient);
                     return;
                 }
                 await sleep(10);

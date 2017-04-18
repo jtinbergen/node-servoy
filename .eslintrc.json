@@ -15,6 +15,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "class-methods-use-this": 0,
         "no-restricted-syntax": 0,
         "indent": ["error", 4],
         "react/jsx-indent": ["error", 4],
