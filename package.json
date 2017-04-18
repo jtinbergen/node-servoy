@@ -19,7 +19,6 @@
     "jest": "^19.0.2"
   },
   "dependencies": {
-    "nodemailer": "^4.0.1",
     "pg": "^6.1.5",
     "uuid": "^3.0.1"
   }
