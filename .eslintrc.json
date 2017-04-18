@@ -1,0 +1,30 @@
+{
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "env": {
+        "browser": false,
+        "commonjs": true,
+        "es6": true,
+        "node": true,
+        "jest": true
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-restricted-syntax": 0,
+        "indent": ["error", 4],
+        "react/jsx-indent": ["error", 4],
+        "react/jsx-indent-props": ["error", 4],
+        "func-names": "warn",
+        "max-len": ["error", 200],
+        "no-console": 0,
+        "no-continue": 0,
+        "no-await-in-loop": 0,
+        "import/extensions": 0,
+        "react/require-default-props": 0
+    }
+}
