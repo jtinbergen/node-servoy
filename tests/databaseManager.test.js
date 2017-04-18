@@ -1,21 +1,27 @@
 const DatabaseManager = require('../src/DatabaseManager');
 
-test('databaseManager can register server', () => {
+afterAll(() => {
+    DatabaseManager.getServer('postgres').closeAllConnections();
+});
+
+beforeEach(() => {
     DatabaseManager.registerServer({
         name: 'postgres',
-        standbySize: 1,
         poolSize: 10,
         connectionString: 'postgresql://postgres:postgres@localhost/postgres',
     });
+});
+
+afterEach(() => {
+    DatabaseManager.getServer('postgres').closeAllConnections();
+    DatabaseManager.unregisterServer('postgres');
+});
+
+test('databaseManager can register server', () => {
     expect(DatabaseManager.getServer('postgres')).toBeDefined();
 });
 
 test('databaseManager Instance shares connection info from DatabaseManager', async () => {
-    DatabaseManager.registerServer({
-        name: 'postgres',
-        connectionString: 'postgresql://postgres:postgres@localhost/postgres',
-        databaseName: 'postgres',
-    });
     const databaseManager = DatabaseManager.getInstance();
     const result = await databaseManager.getDataSetByQuery('postgres', 'SELECT 22', [], -1);
     expect(result).toBeDefined();
@@ -23,12 +29,6 @@ test('databaseManager Instance shares connection info from DatabaseManager', asy
 });
 
 test('pooledConnections are reused', async () => {
-    DatabaseManager.registerServer({
-        name: 'postgres',
-        poolSize: 3,
-        connectionString: 'postgresql://postgres:postgres@localhost/postgres',
-        databaseName: 'postgres',
-    });
     const databaseManager = DatabaseManager.getInstance();
     expect(DatabaseManager.getServer('postgres').getAvailableConnectionCount()).toEqual(0);
     expect(DatabaseManager.getServer('postgres').getOpenConnectionCount()).toEqual(0);
@@ -44,14 +44,17 @@ test('pooledConnections are reused', async () => {
         databaseManager.getDataSetByQuery('postgres', 'SELECT 8', [], -1),
         databaseManager.getDataSetByQuery('postgres', 'SELECT 9', [], -1),
         databaseManager.getDataSetByQuery('postgres', 'SELECT 10', [], -1),
+        databaseManager.getDataSetByQuery('postgres', 'SELECT 11', [], -1),
+        databaseManager.getDataSetByQuery('postgres', 'SELECT 12', [], -1),
+        databaseManager.getDataSetByQuery('postgres', 'SELECT 13', [], -1),
     ]);
 
-    expect(DatabaseManager.getServer('postgres').getAvailableConnectionCount()).toEqual(3);
-    expect(DatabaseManager.getServer('postgres').getOpenConnectionCount()).toEqual(3);
+    expect(DatabaseManager.getServer('postgres').getAvailableConnectionCount()).toEqual(10);
+    expect(DatabaseManager.getServer('postgres').getOpenConnectionCount()).toEqual(10);
     DatabaseManager.getServer('postgres').closeAllConnections();
     expect(DatabaseManager.getServer('postgres').getAvailableConnectionCount()).toEqual(0);
     expect(DatabaseManager.getServer('postgres').getOpenConnectionCount()).toEqual(0);
     expect(results).toBeDefined();
-    expect(results.length).toEqual(10);
+    expect(results.length).toEqual(13);
 });
 

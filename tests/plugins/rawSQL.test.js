@@ -1,6 +1,10 @@
 const DatabaseManager = require('../../src/DatabaseManager');
 const rawSQL = require('../../src/plugins/rawSQL.js');
 
+afterAll(() => {
+    DatabaseManager.getServer('postgres').closeAllConnections();
+});
+
 test('databaseManager Instance shares connection info from DatabaseManager', async () => {
     DatabaseManager.registerServer({
         name: 'postgres',

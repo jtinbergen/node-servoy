@@ -21,6 +21,15 @@ class DatabaseManager {
         }, server)));
     }
 
+    unregisterServer(serverName) {
+        if (!serverName) {
+            throw new Error('name property is required.');
+        }
+
+        this.servers.get(serverName).closeAllConnections();
+        this.servers.delete(serverName);
+    }
+
     getServer(serverName) {
         return this.servers.get(serverName);
     }
