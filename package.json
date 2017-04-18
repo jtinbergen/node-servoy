@@ -1,6 +1,6 @@
 {
   "name": "node-servoy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "repository": "https://github.com/jtinbergen/node-servoy.git",
   "author": "jaapjan@tinbergen.net",
