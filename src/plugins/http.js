@@ -2,6 +2,42 @@ const https = require('https');
 const http = require('http');
 const url = require('url');
 
+class HttpResponse {
+    constructor({ data, statusCode, headers }) {
+        this.data = data;
+        this.headers = headers;
+        this.statusCode = statusCode;
+    }
+
+    getStatusCode() {
+        return this.statusCode;
+    }
+
+    getResponseBody() {
+        return this.data.toString();
+    }
+
+    getResponseHeaders(header) {
+        if (!header) {
+            return this.headers;
+        }
+
+        return this.headers[header];
+    }
+
+    getMediaData() {
+        return this.data;
+    }
+
+    getCharset() {
+        return 'utf-8';
+    }
+
+    close() {
+        return true;
+    }
+}
+
 class HttpRequest {
     constructor(options) {
         this.options = options;
@@ -90,13 +126,17 @@ class HttpRequest {
         return new Promise((resolve, reject) => {
             const client = this.options.tls ? https : http;
             const req = client.request(this.options, (res) => {
-                let buffer = Buffer.alloc(0);
-                res.on('data', (data) => {
-                    buffer = Buffer.concat([buffer, data]);
+                let data = Buffer.alloc(0);
+                res.on('data', (newData) => {
+                    data = Buffer.concat([data, newData]);
                 });
 
                 res.on('end', () => {
-                    resolve(buffer);
+                    resolve(new HttpResponse({
+                        headers: res.headers,
+                        statusCode: res.statusCode,
+                        data,
+                    }));
                 });
             });
 
@@ -184,8 +224,59 @@ class HttpClient {
 const createNewHttpClient = () => new HttpClient();
 const getMediaData = () => {};
 const getPageData = () => {};
+const HTTP_STATUS = {
+    SC_ACCEPTED: 202,
+    SC_BAD_GATEWAY: 502,
+    SC_BAD_REQUEST: 400,
+    SC_CONFLICT: 409,
+    SC_CONTINUE: 100,
+    SC_CREATED: 201,
+    SC_EXPECTATION_FAILED: 417,
+    SC_FAILED_DEPENDENCY: 424,
+    SC_FORBIDDEN: 403,
+    SC_GATEWAY_TIMEOUT: 504,
+    SC_GONE: 410,
+    SC_HTTP_VERSION_NOT_SUPPORTED: 505,
+    SC_INSUFFICIENT_SPACE_ON_RESOURCE: 419,
+    SC_INSUFFICIENT_STORAGE: 507,
+    SC_INTERNAL_SERVER_ERROR: 500,
+    SC_LENGTH_REQUIRED: 411,
+    SC_LOCKED: 423,
+    SC_METHOD_FAILURE: 420,
+    SC_METHOD_NOT_ALLOWED: 405,
+    SC_MOVED_PERMANENTLY: 301,
+    SC_MOVED_TEMPORARILY: 302,
+    SC_MULTIPLE_CHOICES: 300,
+    SC_MULTI_STATUS: 207,
+    SC_NON_AUTHORITATIVE_INFORMATION: 203,
+    SC_NOT_ACCEPTABLE: 406,
+    SC_NOT_FOUND: 404,
+    SC_NOT_IMPLEMENTED: 501,
+    SC_NOT_MODIFIED: 304,
+    SC_NO_CONTENT: 204,
+    SC_OK: 200,
+    SC_PARTIAL_CONTENT: 206,
+    SC_PAYMENT_REQUIRED: 402,
+    SC_PRECONDITION_FAILED: 412,
+    SC_PROCESSING: 102,
+    SC_PROXY_AUTHENTICATION_REQUIRED: 407,
+    SC_REQUESTED_RANGE_NOT_SATISFIABLE: 416,
+    SC_REQUEST_TIMEOUT: 408,
+    SC_REQUEST_TOO_LONG: 413,
+    SC_REQUEST_URI_TOO_LONG: 414,
+    SC_RESET_CONTENT: 205,
+    SC_SEE_OTHER: 303,
+    SC_SERVICE_UNAVAILABLE: 503,
+    SC_SWITCHING_PROTOCOLS: 101,
+    SC_TEMPORARY_REDIRECT: 307,
+    SC_UNAUTHORIZED: 401,
+    SC_UNPROCESSABLE_ENTITY: 422,
+    SC_UNSUPPORTED_MEDIA_TYPE: 415,
+    SC_USE_PROXY: 305,
+};
 
 module.exports = {
+    HTTP_STATUS,
     createNewHttpClient,
     getMediaData,
     getPageData,
