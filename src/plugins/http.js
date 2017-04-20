@@ -124,7 +124,13 @@ class HttpRequest {
      */
     async executeRequest(userName, password, workstation, domain) {
         return new Promise((resolve, reject) => {
-            const client = this.options.tls ? https : http;
+            const client = this.options.tls || (this.options.protocol && this.options.protocol === 'https:') ? https : http;
+            this.options.headers = this.options.headers || {};
+            if (this.body) {
+                this.options.headers['Content-type'] = this.options.headers['Content-type'] || 'application/json'; 
+                this.options.headers['Content-length'] = this.body.length;
+            }
+
             const req = client.request(this.options, (res) => {
                 let data = Buffer.alloc(0);
                 res.on('data', (newData) => {
@@ -166,9 +172,10 @@ class HttpClient {
         return new HttpRequest({
             timeout: this.defaultTimeout || 60000,
             hostname: urlInformation.hostname,
+            protocol: urlInformation.protocol,
             port: urlInformation.port || (urlInformation.protocol === 'https:' ? 443 : 80),
             path: urlInformation.path,
-            method: 'GET',
+            method: type,
         });
     }
 
