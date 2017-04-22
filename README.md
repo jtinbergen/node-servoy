@@ -4,10 +4,6 @@
 
 ```node-servoy``` is a Node.JS library which emulates a small part of the Servoy-specific Javascript API through extensive use of ```async/await```.
 
-## Why
-
-It is meant to help convert existing Servoy Javascript code to Node.JS for smoother, incremental, migration.  
-
 ## Implementation
 
 Right now it implements:
@@ -23,7 +19,7 @@ There is only one database driver implemented: PostgreSQL.
 
 ## Parser
 
-It also implements a parser that lets you convert ```.frm``` and ```.dbi``` files to JSON objects.
+It also implements a parser that lets you convert ```.frm``` and ```.dbi``` files to JSON objects. This will let you build dependency trees between forms or automatically generate documentation.
 
 ## Contributing
 
