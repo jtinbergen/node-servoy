@@ -1,3 +1,6 @@
+const JSDataSet = require('./JSDataSet');
+const JSFoundSet = require('./JSFoundSet');
+
 class DatabaseManagerInstance {
     constructor({ DatabaseManager }) {
         this.DatabaseManager = DatabaseManager;
@@ -59,6 +62,15 @@ class DatabaseManagerInstance {
         const server = this.DatabaseManager.getServer(this.aliasedServerName(serverName));
         const client = await server.getClient();
         return client.getDataSetByQuery(sqlQuery, args, maxReturnedRows);
+    }
+
+    async getFoundSet(serverName, tableName) {
+        return new JSFoundSet({
+            databaseManager: this,
+            table: await this.DatabaseManager.getTable(serverName, tableName),
+            serverName,
+            tableName,
+        });
     }
 
     createEmptyDataSet() {

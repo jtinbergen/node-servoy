@@ -43,10 +43,11 @@ class PostgresServer {
                 this.openConnections.push(client);
                 client.connect((err) => {
                     if (err) {
+                        this.openConnections = this.openConnections.filter(c => c !== client);
                         reject(err);
                         return;
                     }
-
+                
                     resolve(client);
                 });
             });
@@ -75,12 +76,11 @@ class PostgresServer {
     }
 
     closeAllConnections() {
-        const connections = this.openConnections;
-        this.openConnections = [];
-        this.availableConnections = [];
-        connections.forEach((connection) => {
+        this.openConnections.forEach((connection) => {
             connection.end();
         });
+        this.availableConnections = [];
+        this.openConnections = [];
     }
 
     getDatabaseProductName(serverName, callback) {
@@ -151,7 +151,7 @@ class PostgresServer {
         const table = new JSTable({
             serverName,
             tableName,
-            databaseManager: this,
+            server: this,
         });
         await table.initialize();
         return table;

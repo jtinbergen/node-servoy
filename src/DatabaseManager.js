@@ -34,6 +34,11 @@ class DatabaseManager {
         return this.servers.get(serverName);
     }
 
+    async getTable(serverName, tableName) {
+        const server = this.getServer(serverName);
+        return server.getTable(serverName, tableName);
+    }
+
     setAutoSave(autoSave) {
         this.autoSave = autoSave;
         return this.autoSave;

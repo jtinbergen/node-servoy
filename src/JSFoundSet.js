@@ -2,7 +2,7 @@ const JSRecord = require('./JSRecord').JSRecord;
 const recordProxyHandler = require('./JSRecord').recordProxyHandler;
 
 class JSFoundSet {
-    constructor({databaseManager, tableName, serverName, table }) {
+    constructor({ databaseManager, tableName, serverName, table }) {
         this.databaseManager = databaseManager;
         this.tableName = tableName;
         this.serverName = serverName;
@@ -14,10 +14,9 @@ class JSFoundSet {
 
     async getRecords(from, to) {
         const dataset = await this.databaseManager.getDataSetByQuery(this.serverName, `SELECT * FROM ${this.tableName} OFFSET ${from} LIMIT ${to - from}`, [], -1);
-        for (let row = 1; row <= dataset.getMaxRowIndex(); row ++)
-        {
+        for (let row = 1; row <= dataset.getMaxRowIndex(); row += 1) {
             const record = {
-                _state: 0
+                _state: 0,
             };
             const columnNames = dataset.getColumnNames();
             columnNames.forEach((columnName, columnIndex) => {
@@ -26,7 +25,7 @@ class JSFoundSet {
             const jsrecord = new JSRecord({
                 databaseManager: this.databaseManager,
                 foundset: this,
-                record
+                record,
             });
             const recordProxy = new Proxy(jsrecord, recordProxyHandler);
             this.records.set(row + from, recordProxy);
@@ -37,7 +36,7 @@ class JSFoundSet {
         if (!this.records.has(recordIndex)) {
             const page = {
                 from: Math.floor(recordIndex / 200) * 200,
-                to: (Math.floor(recordIndex / 200)+1) * 200,
+                to: (Math.floor(recordIndex / 200) + 1) * 200,
             };
             await this.getRecords(page.from, page.to);
         }
@@ -53,7 +52,7 @@ class JSFoundSet {
     async getSize() {
         const dataset = await this.databaseManager.getDataSetByQuery(this.serverName, `SELECT COUNT(*) FROM ${this.tableName}`, [], -1);
         return dataset.getValue(1, 1);
-    };
+    }
 }
 
 module.exports = JSFoundSet;
