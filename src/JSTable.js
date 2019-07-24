@@ -1,19 +1,14 @@
 class JSTable {
-    constructor({
-        databaseManager,
-        tableName,
-        serverName,
-        server,
-    }) {
-        this.server = server;
-        this.tableName = tableName;
-        this.databaseManager = databaseManager;
-        this.serverName = serverName;
-        this.columns = [];
-    }
+  constructor({ databaseManager, tableName, serverName, server }) {
+    this.server = server;
+    this.tableName = tableName;
+    this.databaseManager = databaseManager;
+    this.serverName = serverName;
+    this.columns = [];
+  }
 
-    async initialize() {
-        const tableInformationQuery = tableName => `
+  async initialize() {
+    const tableInformationQuery = tableName => `
             WITH pkey AS (
                 SELECT
                     information_schema.constraint_column_usage.table_catalog,
@@ -43,60 +38,61 @@ class JSTable {
             WHERE
              information_schema. COLUMNS . TABLE_NAME = '${tableName}'
         `;
-//                information_schema. COLUMNS .table_schema = 'public' AND
+    //                information_schema. COLUMNS .table_schema = 'public' AND
 
-        const client = await this.server.getClient();
-        const dataset = await client.getDataSetByQuery(tableInformationQuery(this.tableName), [], -1);
-        for (let index = 1; index <= dataset.getMaxRowIndex(); index += 1) {
-            this.columns.push({
-                name: dataset.getValue(index, 4),
-                position: dataset.getValue(index, 5),
-                default: dataset.getValue(index, 6),
-                nullable: dataset.getValue(index, 7),
-                type: dataset.getValue(index, 8),
-                length: dataset.getValue(index, 9),
-                primary: dataset.getValue(index, 28),
-            });
-        }
+    const client = await this.server.getClient();
+    const dataset = await client.getDataSetByQuery(
+      tableInformationQuery(this.tableName),
+      [],
+      -1
+    );
+    for (let index = 1; index <= dataset.getMaxRowIndex(); index += 1) {
+      this.columns.push({
+        name: dataset.getValue(index, 4),
+        position: dataset.getValue(index, 5),
+        default: dataset.getValue(index, 6),
+        nullable: dataset.getValue(index, 7),
+        type: dataset.getValue(index, 8),
+        length: dataset.getValue(index, 9),
+        primary: dataset.getValue(index, 28)
+      });
     }
+  }
 
-    // 	Returns a JSColumn for the named column (or column dataproviderID).
-    getColumn(columnName) {
-        return this.columns.filter(column => column.name === columnName)[0];
-    }
+  // 	Returns a JSColumn for the named column (or column dataproviderID).
+  getColumn(columnName) {
+    return this.columns.filter(column => column.name === columnName)[0];
+  }
 
-    // Returns an array containing the names of all table columns.
-    getColumnNames() {
-        return this.columns.map(column => column.name);
-    }
+  // Returns an array containing the names of all table columns.
+  getColumnNames() {
+    return this.columns.map(column => column.name);
+  }
 
-    // Returns the table data source uri.
-    getDataSource() {
-        return `db:/${this.serverName}/${this.tableName}`;
-    }
+  // Returns the table data source uri.
+  getDataSource() {
+    return `db:/${this.serverName}/${this.tableName}`;
+  }
 
-	// Returns a quoted version of the table name, if necessary, as defined by the actual database used.
-    getQuotedSQLName() {
-        return this.serverName;
-    }
+  // Returns a quoted version of the table name, if necessary, as defined by the actual database used.
+  getQuotedSQLName() {
+    return this.serverName;
+  }
 
-	// Returns an array containing the names of the identifier (PK) column(s).
-    getRowIdentifierColumnNames() {
+  // Returns an array containing the names of the identifier (PK) column(s).
+  getRowIdentifierColumnNames() {}
 
-    }
+  getSQLName() {
+    return this.tableName;
+  }
 
-    getSQLName() {
-        return this.tableName;
-    }
+  getServerName() {
+    return this.serverName;
+  }
 
-    getServerName() {
-        return this.serverName;
-    }
-
-    isMetadataTable() {
-        return false;
-    }
+  isMetadataTable() {
+    return false;
+  }
 }
 
 module.exports = JSTable;
-

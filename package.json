@@ -12,16 +12,16 @@
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.2",
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.10.3",
-    "jest": "^19.0.2"
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "jest": "^24.8.0"
   },
   "dependencies": {
-    "pg": "^6.1.5",
-    "uuid": "^3.0.1"
+    "pg": "^7.11.0",
+    "uuid": "^3.3.2"
   }
 }
