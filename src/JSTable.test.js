@@ -1,5 +1,5 @@
-const DatabaseManager = require("../src/DatabaseManager");
-const JSColumn = require("../src/JSColumn");
+const DatabaseManager = require("./DatabaseManager");
+const JSColumn = require("./JSColumn");
 
 describe.skip("JSTable", () => {
   afterAll(() => {

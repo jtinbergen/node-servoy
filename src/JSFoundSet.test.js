@@ -1,4 +1,4 @@
-const DatabaseManager = require("../src/DatabaseManager");
+const DatabaseManager = require("./DatabaseManager");
 
 describe.skip("JSFoundSet", () => {
   beforeEach(() => {
