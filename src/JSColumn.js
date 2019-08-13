@@ -1,41 +1,39 @@
 class JSColumn {
-    JSColumn({ server }) {
+  JSColumn({ server }) {}
 
-    }
+  getAllowNull() {}
 
-    getAllowNull() {}
+  getDataProviderID() {}
 
-    getDataProviderID() {}
+  getDefaultFormat() {}
 
-    getDefaultFormat() {}
+  getDescription() {}
 
-    getDescription() {}
+  getForeignType() {}
 
-    getForeignType() {}
+  getLength() {}
 
-    getLength() {}
+  getQualifiedName() {}
 
-    getQualifiedName() {}
+  getQuotedSQLName() {}
 
-    getQuotedSQLName() {}
+  getRowIdentifierType() {}
 
-    getRowIdentifierType() {}
+  getSQLName() {}
 
-    getSQLName() {}
+  getSQLType() {}
 
-    getSQLType() {}
+  getScale() {}
 
-    getScale() {}
+  getSequenceType() {}
 
-    getSequenceType() {}
+  getTitle() {}
 
-    getTitle() {}
+  getType() {}
 
-    getType() {}
+  getTypeAsString() {}
 
-    getTypeAsString() {}
-
-    hasFlag(flag) {}
+  hasFlag(flag) {}
 }
 
 JSColumn.DATABASE_IDENTITY = 0;
