@@ -1,31 +1,31 @@
 {
-    "extends": "airbnb",
-    "parser": "babel-eslint",
-    "env": {
-        "browser": false,
-        "commonjs": true,
-        "es6": true,
-        "node": true,
-        "jest": true
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "env": {
+    "browser": false,
+    "commonjs": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "sourceType": "module"
-    },
-    "rules": {
-        "class-methods-use-this": 0,
-        "no-restricted-syntax": 0,
-        "indent": ["error", 4],
-        "react/jsx-indent": ["error", 4],
-        "react/jsx-indent-props": ["error", 4],
-        "func-names": "warn",
-        "max-len": ["error", 200],
-        "no-console": 0,
-        "no-continue": 0,
-        "no-await-in-loop": 0,
-        "import/extensions": 0,
-        "react/require-default-props": 0
-    }
+    "sourceType": "module"
+  },
+  "rules": {
+    "class-methods-use-this": 0,
+    "no-restricted-syntax": 0,
+    "indent": ["error", 2],
+    "react/jsx-indent": ["error", 2],
+    "react/jsx-indent-props": ["error", 2],
+    "func-names": "warn",
+    "max-len": ["error", 200],
+    "no-console": 0,
+    "no-continue": 0,
+    "no-await-in-loop": 0,
+    "import/extensions": 0,
+    "react/require-default-props": 0
+  }
 }

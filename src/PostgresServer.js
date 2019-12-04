@@ -1,7 +1,7 @@
-const pg = require("pg");
-const JSColumn = require("./JSColumn");
-const JSDataSet = require("./JSDataSet");
-const JSTable = require("./JSTable");
+const pg = require('pg');
+const JSColumn = require('./JSColumn');
+const JSDataSet = require('./JSDataSet');
+const JSTable = require('./JSTable');
 
 class PostgresServer {
   constructor(settings) {
@@ -15,9 +15,9 @@ class PostgresServer {
       23: JSColumn.NUMBER,
       25: JSColumn.TEXT,
       705: JSColumn.TEXT,
-      1114: JSColumn.DATE,
+      1114: JSColumn.DATETIME,
       1043: JSColumn.TEXT,
-      1700: JSColumn.NUMBER
+      1700: JSColumn.NUMBER,
     };
     this.openConnections = [];
     this.availableConnections = [];
@@ -41,10 +41,10 @@ class PostgresServer {
       return new Promise((resolve, reject) => {
         client = new pg.Client(this.settings.connectionString);
         this.openConnections.push(client);
-        client.connect(err => {
+        client.connect((err) => {
           if (err) {
             this.openConnections = this.openConnections.filter(
-              c => c !== client
+              (c) => c !== client,
             );
             reject(err);
             return;
@@ -56,14 +56,14 @@ class PostgresServer {
     }
 
     function sleep(timeout) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           resolve();
         }, timeout);
       });
     }
 
-    return new Promise(async resolve => {
+    return new Promise(async (resolve) => {
       let done = false;
       while (!done) {
         const availableClient = this.availableConnections.pop();
@@ -78,10 +78,10 @@ class PostgresServer {
   }
 
   closeAllConnections() {
-    this.openConnections.map(connection => {
+    this.openConnections.map((connection) => {
       connection.end();
     });
-    this.availableConnections.map(connection => {
+    this.availableConnections.map((connection) => {
       connection.end();
     });
 
@@ -91,13 +91,13 @@ class PostgresServer {
 
   getDatabaseProductName(serverName, callback) {
     this.getDataSetByQuery(
-      "postgres",
-      "select version()",
+      'postgres',
+      'select version()',
       [],
       1,
       (err, result) => {
         callback(err, result.getValue(1, 1));
-      }
+      },
     );
   }
 
@@ -110,13 +110,13 @@ class PostgresServer {
   }
 
   sql(query, args) {
-    while (query.indexOf("?") > -1) {
+    while (query.indexOf('?') > -1) {
       let arg = args.shift();
-      if (typeof arg === "string") {
+      if (typeof arg === 'string') {
         arg = `'${arg}'`;
       }
 
-      query = query.replace("?", arg);
+      query = query.replace('?', arg);
     }
 
     return query;
@@ -134,27 +134,29 @@ class PostgresServer {
 
             this.availableConnections.push(client);
             const dataset = new JSDataSet();
-            result.fields.forEach(field => {
+            result.fields.forEach((field) => {
               dataset.addColumn(
                 field.name,
                 field.columnID,
-                this.convertToJSColumn(field.dataTypeID, field.name)
+                this.convertToJSColumn(field.dataTypeID, field.name),
               );
             });
 
-            result.rows.forEach(record => {
+            result.rows.forEach((record) => {
               if (
                 dataset.getMaxRowIndex() < maxReturnedRows ||
                 maxReturnedRows === -1
               ) {
-                dataset.addRow(result.fields.map(field => record[field.name]));
+                dataset.addRow(
+                  result.fields.map((field) => record[field.name]),
+                );
               }
             });
 
             return resolve(dataset);
           });
         });
-      }
+      },
     };
   }
 
@@ -170,7 +172,7 @@ class PostgresServer {
     const table = new JSTable({
       serverName,
       tableName,
-      server: this
+      server: this,
     });
     await table.initialize();
     return table;

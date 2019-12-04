@@ -14,39 +14,39 @@ const BOOLEAN = 13;
 const NULL = 14;
 const WHITESPACE = 15;
 
-const tokenizer = code => {
+const tokenizer = (code) => {
   const tokens = [];
   let pos = 0;
   const parseIdentifier = () => {
-    let value = "";
+    let value = '';
     while (/[a-zA-Z\-_0-9]/.test(code[pos]) && pos < code.length) {
       value += code[pos];
       pos += 1;
     }
 
-    if (value === "true" || value === "false") {
+    if (value === 'true' || value === 'false') {
       tokens.push({
         type: BOOLEAN,
-        value: value === "true"
+        value: value === 'true',
       });
       return;
     }
 
-    if (value === "null") {
+    if (value === 'null') {
       tokens.push({
-        type: NULL
+        type: NULL,
       });
       return;
     }
 
     tokens.push({
       type: IDENTIFIER,
-      value
+      value,
     });
   };
 
   const parseNumber = () => {
-    let value = "";
+    let value = '';
     while (/[-0-9]/.test(code[pos]) && pos < code.length) {
       value += code[pos];
       pos += 1;
@@ -54,15 +54,15 @@ const tokenizer = code => {
 
     tokens.push({
       type: NUMBER,
-      value: parseFloat(value)
+      value: parseFloat(value),
     });
   };
 
   const stringValue = () => {
-    let value = "";
+    let value = '';
     pos += 1;
     while (code[pos] !== '"' && pos < code.length) {
-      if (code[pos] === "\\") {
+      if (code[pos] === '\\') {
         pos += 1;
       }
 
@@ -73,14 +73,14 @@ const tokenizer = code => {
     pos += 1;
     tokens.push({
       type: STRING,
-      value
+      value,
     });
   };
 
   const matchCharacter = (character, type, optional) => {
     if (code[pos] === character) {
       tokens.push({
-        type
+        type,
       });
       pos += 1;
       return;
@@ -96,18 +96,18 @@ const tokenizer = code => {
     counter += 1;
     while (code.charCodeAt(pos) === 32 || code.charCodeAt(pos) === 9) {
       tokens.push({
-        WHITESPACE
+        WHITESPACE,
       });
       pos += 1;
     }
-    matchCharacter("\r", CARRIAGERETURN, true);
-    matchCharacter("\n", LINEFEED, true);
-    matchCharacter("[", BRACKET_OPEN, true);
-    matchCharacter("]", BRACKET_CLOSE, true);
-    matchCharacter("{", CURLY_OPEN, true);
-    matchCharacter("}", CURLY_CLOSE, true);
-    matchCharacter(",", COMMA, true);
-    matchCharacter(":", COLON, true);
+    matchCharacter('\r', CARRIAGERETURN, true);
+    matchCharacter('\n', LINEFEED, true);
+    matchCharacter('[', BRACKET_OPEN, true);
+    matchCharacter(']', BRACKET_CLOSE, true);
+    matchCharacter('{', CURLY_OPEN, true);
+    matchCharacter('}', CURLY_CLOSE, true);
+    matchCharacter(',', COMMA, true);
+    matchCharacter(':', COLON, true);
     if (code[pos] === '"') {
       stringValue();
       continue;
@@ -125,14 +125,14 @@ const tokenizer = code => {
 
     if (counter > code.length) {
       throw new Error(
-        `Stuck tokenizing: position ${pos} (${code.charCodeAt(pos)})`
+        `Stuck tokenizing: position ${pos} (${code.charCodeAt(pos)})`,
       );
     }
   }
   return tokens;
 };
 
-const tokenToString = token => {
+const tokenToString = (token) => {
   if (token.type === IDENTIFIER) {
     return token.value;
   }
@@ -146,27 +146,27 @@ const tokenToString = token => {
   }
 
   if (token.type === COLON) {
-    return ":";
+    return ':';
   }
 
   if (token.type === COMMA) {
-    return ",";
+    return ',';
   }
 
   if (token.type === BRACKET_OPEN) {
-    return "[";
+    return '[';
   }
 
   if (token.type === BRACKET_CLOSE) {
-    return "]";
+    return ']';
   }
 
   if (token.type === CURLY_OPEN) {
-    return "{";
+    return '{';
   }
 
   if (token.type === CURLY_CLOSE) {
-    return "}";
+    return '}';
   }
 
   if (token.type === DOUBLEQUOTE) {
@@ -174,11 +174,11 @@ const tokenToString = token => {
   }
 
   if (token.type === CARRIAGERETURN) {
-    return "\r";
+    return '\r';
   }
 
   if (token.type === LINEFEED) {
-    return "\n";
+    return '\n';
   }
 
   if (token.type === BOOLEAN) {
@@ -189,12 +189,12 @@ const tokenToString = token => {
     return '"null"';
   }
 
-  return "";
+  return '';
 };
 
-const expectIdentifier = state => {
+const expectIdentifier = (state) => {
   if (state.tokens[state.pos].type !== IDENTIFIER) {
-    throw new Error("Expected identifier");
+    throw new Error('Expected identifier');
   }
 
   return state.tokens[state.pos++].value;
@@ -203,25 +203,17 @@ const expectIdentifier = state => {
 const expect = (state, type) => {
   if (state.tokens[state.pos].type !== type) {
     throw new Error(
-      `Expected type ${type} but got ${state.tokens[state.pos].type}`
+      `Expected type ${type} but got ${state.tokens[state.pos].type}`,
     );
   }
 
   state.pos++;
 };
 
-const nextIs = (state, type) => {
-  if (
-    state.pos < state.tokens.length &&
-    state.tokens[state.pos].type === type
-  ) {
-    return true;
-  }
+const nextIs = (state, type) =>
+  state.pos < state.tokens.length && state.tokens[state.pos].type === type;
 
-  return false;
-};
-
-const expectValue = state => {
+const expectValue = (state) => {
   if (nextIs(state, BRACKET_OPEN)) {
     expect(state, BRACKET_OPEN);
     const array = [];
@@ -254,7 +246,7 @@ const expectValue = state => {
   return state.tokens[state.pos++].value;
 };
 
-const expectObject = state => {
+const expectObject = (state) => {
   expect(state, CURLY_OPEN);
   const object = {};
   let continueLoop = true;
@@ -272,12 +264,12 @@ const expectObject = state => {
   return object;
 };
 
-const parser = tokens => {
+const parser = (tokens) => {
   const state = {
     pos: 0,
     tokens: tokens
-      .filter(token => token.type !== LINEFEED)
-      .filter(token => token.type !== CARRIAGERETURN)
+      .filter((token) => token.type !== LINEFEED)
+      .filter((token) => token.type !== CARRIAGERETURN),
   };
   const object = {};
   let continueLoop = true;
@@ -300,7 +292,9 @@ const parser = tokens => {
   return object;
 };
 
-module.exports = code => {
-  const tokens = tokenizer(code);
-  return parser(tokens);
+module.exports = {
+  read: (code) => {
+    const tokens = tokenizer(code);
+    return parser(tokens);
+  },
 };
