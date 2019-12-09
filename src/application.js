@@ -1,38 +1,39 @@
 const os = require('os');
 const uuid = require('uuid');
-const spawn = require('child_process').spawn;
+const { spawn } = require('child_process');
 const constants = require('./constants');
 
-const LOGGINGLEVEL = constants.LOGGINGLEVEL;
-const APPLICATION_TYPES = constants.APPLICATION_TYPES;
+const { LOGGINGLEVEL } = constants;
+const { APPLICATION_TYPES } = constants;
 
-const execProgram = async (cmd, args, options) => new Promise((resolve, reject) => {
+const execProgram = async (cmd, args, options) =>
+  new Promise((resolve, reject) => {
     let stdout = '';
     let stderr = '';
     const childprocess = spawn(cmd, args.split(' '), options);
     childprocess.stdout.on('data', (data) => {
-        stdout += data.toString();
+      stdout += data.toString();
     });
 
     childprocess.stderr.on('data', (data) => {
-        stderr += data.toString();
+      stderr += data.toString();
     });
 
     childprocess.on('close', (code) => {
-        const result = { code, stdout, stderr };
-        if (code !== 0) {
-            return reject(result);
-        }
+      const result = { code, stdout, stderr };
+      if (code !== 0) {
+        return reject(result);
+      }
 
-        return resolve(result);
+      return resolve(result);
     });
-});
+  });
 
 /**
  * Produces a "beep" sound; commonly used to indicate an error or warning dialog.
  */
 const beep = () => {
-    console.warn('Beep');
+  // Not implemented
 };
 
 /**
@@ -42,37 +43,37 @@ const beep = () => {
  *  application.executeProgram("c:\\Users\\myself\\myapp.exe", ["arg1", "arg2", "arg3"], ["MY_ENV_VAR=something"], "c:\\Users\\myself\\");
  */
 const executeProgram = async (program, params, environmentVars, cwd) => {
-    const env = {};
-    environmentVars.forEach((variable) => {
-        const parts = variable.split('=');
-        env[parts[0]] = parts[1];
-    });
-    return execProgram(program, params, {
-        env,
-        cwd,
-    });
+  const env = {};
+  environmentVars.forEach((variable) => {
+    const parts = variable.split('=');
+    env[parts[0]] = parts[1];
+  });
+  return execProgram(program, params, {
+    env,
+    cwd,
+  });
 };
 
 /**
  * Execute a program in the background.
  */
 const executeProgramInBackground = (program, params, environmentVars, cwd) => {
-    const env = {};
-    environmentVars.forEach((variable) => {
-        const parts = variable.split('=');
-        env[parts[0]] = parts[1];
-    });
-    execProgram(program, params, {
-        env,
-        cwd,
-    });
+  const env = {};
+  environmentVars.forEach((variable) => {
+    const parts = variable.split('=');
+    env[parts[0]] = parts[1];
+  });
+  execProgram(program, params, {
+    env,
+    cwd,
+  });
 };
 
 /**
  * Stop and exit application.
  */
 const exit = () => {
-    process.exit();
+  process.exit();
 };
 
 /**
@@ -119,12 +120,12 @@ const getTimeStamp = () => new Date();
  * Get a new UUID object (also known as GUID) or convert the parameter (that can be string or byte array) to an UUID object.
  */
 const getUUID = (arg) => {
-    const uuidString = arg || uuid.v4();
-    const uuidBuffer = Buffer.from(uuidString);
-    return {
-        toString: () => uuidString,
-        toBytes: () => uuidBuffer,
-    };
+  const uuidString = arg || uuid.v4();
+  const uuidBuffer = Buffer.from(uuidString);
+  return {
+    toString: () => uuidString,
+    toBytes: () => uuidBuffer,
+  };
 };
 
 /**
@@ -141,47 +142,48 @@ const isInDeveloper = () => false;
  * Output something on the out stream.
  */
 const output = (msg, level) => {
-    switch (level) {
+  switch (level) {
     case LOGGINGLEVEL.DEBUG:
     case LOGGINGLEVEL.INFO:
-        console.log(msg);
-        break;
+      console.log(msg);
+      break;
     case LOGGINGLEVEL.WARNING:
-        console.warn(msg);
-        break;
+      console.warn(msg);
+      break;
     case LOGGINGLEVEL.ERROR:
-        console.error(msg);
-        break;
+      console.error(msg);
+      break;
     default:
-        console.log(msg);
-    }
+      console.log(msg);
+  }
 };
 
 /**
  * Sleep for specified time (in milliseconds).
  */
-const sleep = ms => new Promise((resolve) => {
+const sleep = (ms) =>
+  new Promise((resolve) => {
     setTimeout(() => resolve(), ms);
-});
+  });
 
 const application = {
-    beep,
-    executeProgram,
-    executeProgramInBackground,
-    exit,
-    getApplicationType,
-    getHostName,
-    getOSName,
-    getServerTimeStamp,
-    getServerURL,
-    getSolutionName,
-    getSolutionRelease,
-    getTimeStamp,
-    getUUID,
-    getVersion,
-    isInDeveloper,
-    output,
-    sleep,
+  beep,
+  executeProgram,
+  executeProgramInBackground,
+  exit,
+  getApplicationType,
+  getHostName,
+  getOSName,
+  getServerTimeStamp,
+  getServerURL,
+  getSolutionName,
+  getSolutionRelease,
+  getTimeStamp,
+  getUUID,
+  getVersion,
+  isInDeveloper,
+  output,
+  sleep,
 };
 
 module.exports = application;

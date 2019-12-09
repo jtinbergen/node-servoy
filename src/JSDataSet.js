@@ -1,11 +1,11 @@
-const JSColumn = require("./JSColumn");
+const JSColumn = require('./JSColumn');
 
 function ColumnInfo() {
   if (!(this instanceof ColumnInfo)) {
     return new ColumnInfo();
   }
 
-  this.name = "?column?";
+  this.name = '?column?';
   this.type = JSColumn.TEXT;
 }
 
@@ -18,13 +18,13 @@ function JSDataSet(json) {
   this.rows = [];
   this.columns = [];
 
-  Object.defineProperty(this, "rowIndex", {
+  Object.defineProperty(this, 'rowIndex', {
     get() {
       return rowIndex;
     },
     set(value) {
       rowIndex = value;
-    }
+    },
   });
 
   if (json && json.rows && json.columns) {
@@ -35,7 +35,7 @@ function JSDataSet(json) {
 
 JSDataSet.prototype.addColumn = function addColumn(name, index, type) {
   const col = new ColumnInfo();
-  col.name = name || "unnamed";
+  col.name = name || 'unnamed';
   col.type = type !== undefined ? type : JSColumn.TEXT;
 
   if (index >= 1 && index <= this.columns.length) {
@@ -89,11 +89,11 @@ JSDataSet.prototype.getAsHTML = function getAsHTML(
   escape_spaces,
   allowMultiLine,
   useIndent,
-  addColumnInformation
+  addColumnInformation,
 ) {
-  let html = "";
+  let html = '';
   html += `<p>Lines: ${this.getMaxRowIndex()}</p>`;
-  html += "<table>";
+  html += '<table>';
   if (addColumnInformation) {
     const columnNames = this.getColumnNames();
     html += '<tr style="background-color: #dddddd">';
@@ -102,25 +102,25 @@ JSDataSet.prototype.getAsHTML = function getAsHTML(
       html += `<th style="text-align: left">${columnNames[i]}</th>`;
     }
 
-    html += "</tr>";
+    html += '</tr>';
   }
 
   for (let row = 0; row < this.rows.length; row += 1) {
-    html += "<tr>";
-    const style = row % 2 === 0 ? "background-color: #eff3fe" : "";
+    html += '<tr>';
+    const style = row % 2 === 0 ? 'background-color: #eff3fe' : '';
     html += `<td style="${style} font-style: italic color: gray">${(
       row + 1
     ).toFixed()}</td>`;
     for (let col = 0; col < this.columns.length; col += 1) {
       let value = this.rows[row][col];
-      if (!value) value = "";
+      if (!value) value = '';
       html += `<td style="${style}">${value}</td>`;
     }
 
-    html += "</tr>";
+    html += '</tr>';
   }
 
-  html += "</table>";
+  html += '</table>';
   return html;
 };
 

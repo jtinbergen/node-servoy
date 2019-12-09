@@ -8,7 +8,7 @@ class JSTable {
   }
 
   async initialize() {
-    const tableInformationQuery = tableName => `
+    const tableInformationQuery = (tableName) => `
             WITH pkey AS (
                 SELECT
                     information_schema.constraint_column_usage.table_catalog,
@@ -44,7 +44,7 @@ class JSTable {
     const dataset = await client.getDataSetByQuery(
       tableInformationQuery(this.tableName),
       [],
-      -1
+      -1,
     );
     for (let index = 1; index <= dataset.getMaxRowIndex(); index += 1) {
       this.columns.push({
@@ -54,19 +54,19 @@ class JSTable {
         nullable: dataset.getValue(index, 7),
         type: dataset.getValue(index, 8),
         length: dataset.getValue(index, 9),
-        primary: dataset.getValue(index, 28)
+        primary: dataset.getValue(index, 28),
       });
     }
   }
 
   // 	Returns a JSColumn for the named column (or column dataproviderID).
   getColumn(columnName) {
-    return this.columns.filter(column => column.name === columnName)[0];
+    return this.columns.filter((column) => column.name === columnName)[0];
   }
 
   // Returns an array containing the names of all table columns.
   getColumnNames() {
-    return this.columns.map(column => column.name);
+    return this.columns.map((column) => column.name);
   }
 
   // Returns the table data source uri.

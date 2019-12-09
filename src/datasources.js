@@ -1,4 +1,4 @@
 module.exports = {
-    db: [],
-    mem: [],
+  db: [],
+  mem: [],
 };

@@ -7,7 +7,7 @@ const file = require('./file');
 
 jest.mock('open');
 
-describe('file', () => {
+describe('plugins.file', () => {
   describe('JSFile', () => {
     test('getAbsolutePath', async () => {
       const f = file.convertToJSFile('test.text');

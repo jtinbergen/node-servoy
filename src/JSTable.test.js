@@ -1,27 +1,27 @@
-const DatabaseManager = require("./DatabaseManager");
-const JSColumn = require("./JSColumn");
+const DatabaseManager = require('./DatabaseManager');
+const JSColumn = require('./JSColumn');
 
-describe.skip("JSTable", () => {
+describe.skip('JSTable', () => {
   afterAll(() => {
-    DatabaseManager.getServer("postgres").closeAllConnections();
+    DatabaseManager.getServer('postgres').closeAllConnections();
   });
 
   beforeEach(() => {
     DatabaseManager.registerServer({
-      name: "postgres",
+      name: 'postgres',
       poolSize: 10,
-      connectionString: "postgresql://postgres:postgres@localhost/postgres"
+      connectionString: 'postgresql://postgres:postgres@localhost/postgres',
     });
   });
 
   afterEach(() => {
-    DatabaseManager.getServer("postgres").closeAllConnections();
-    DatabaseManager.unregisterServer("postgres");
+    DatabaseManager.getServer('postgres').closeAllConnections();
+    DatabaseManager.unregisterServer('postgres');
   });
 
-  test("DatabaseManager can query JSTable", async () => {
-    const jstable = await DatabaseManager.getTable("postgres", "pg_tablespace");
-    expect(jstable.getSQLName()).toEqual("pg_tablespace");
+  test('DatabaseManager can query JSTable', async () => {
+    const jstable = await DatabaseManager.getTable('postgres', 'pg_tablespace');
+    expect(jstable.getSQLName()).toEqual('pg_tablespace');
 
     const columnNamesArray = jstable.getColumnNames();
     expect(columnNamesArray.length).toEqual(4);
