@@ -15,6 +15,7 @@ class PostgresServer {
       23: JSColumn.NUMBER,
       25: JSColumn.TEXT,
       705: JSColumn.TEXT,
+      1082: JSColumn.DATETIME,
       1114: JSColumn.DATETIME,
       1184: JSColumn.DATETIME,
       1043: JSColumn.TEXT,
