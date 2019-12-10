@@ -64,7 +64,10 @@ JSDataSet.prototype.addRow = function addRow(index, array) {
   for (let i = 0; i < array.length; i += 1) {
     const type = this.getColumnType(i + 1);
     if (type === JSColumn.NUMBER) {
-      array[i] = array[i] ? parseFloat(array[i]) : null;
+      array[i] =
+        array[i] && typeof array[i] !== 'number'
+          ? parseFloat(array[i])
+          : array[i];
     }
   }
 

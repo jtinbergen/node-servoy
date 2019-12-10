@@ -136,10 +136,10 @@ class PostgresServer {
 
             this.availableConnections.push(client);
             const dataset = new JSDataSet();
-            result.fields.forEach((field) => {
+            result.fields.forEach((field, index) => {
               dataset.addColumn(
                 field.name,
-                field.columnID,
+                index + 1,
                 this.convertToJSColumn(field.dataTypeID, field.name),
               );
             });
