@@ -168,7 +168,7 @@ JSDataSet.prototype.getRowAsArray = function getRowAsArray(row) {
     return null;
   }
 
-  return this.rows[row - 1];
+  return [...this.rows[row - 1]];
 };
 
 JSDataSet.prototype.getMaxRowIndex = function getMaxRowIndex() {
