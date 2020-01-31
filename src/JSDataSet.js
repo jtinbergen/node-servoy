@@ -215,4 +215,14 @@ JSDataSet.prototype.removeColumn = function removeColumn(col) {
   }
 };
 
+JSDataSet.prototype.sort = function sort(columnIndex, ascendingOrDescending) {
+  this.rows = this.rows.sort((a, b) => {
+    if (a[columnIndex - 1] < b[columnIndex - 1])
+      return ascendingOrDescending ? -1 : 1;
+    if (a[columnIndex - 1] > b[columnIndex - 1])
+      return ascendingOrDescending ? 1 : -1;
+    return 0;
+  });
+};
+
 module.exports = JSDataSet;
