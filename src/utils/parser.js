@@ -96,7 +96,7 @@ const tokenizer = (code) => {
     counter += 1;
     while (code.charCodeAt(pos) === 32 || code.charCodeAt(pos) === 9) {
       tokens.push({
-        WHITESPACE,
+        type: WHITESPACE,
       });
       pos += 1;
     }
@@ -213,6 +213,12 @@ const expect = (state, type) => {
 const nextIs = (state, type) =>
   state.pos < state.tokens.length && state.tokens[state.pos].type === type;
 
+const eatWhitespace = (state) => {
+  while (nextIs(state, WHITESPACE)) {
+    expect(state, WHITESPACE);
+  }
+};
+
 const expectValue = (state) => {
   if (nextIs(state, BRACKET_OPEN)) {
     expect(state, BRACKET_OPEN);
@@ -252,7 +258,9 @@ const expectObject = (state) => {
   let continueLoop = true;
   while (continueLoop && !nextIs(state, CURLY_CLOSE)) {
     const propertyName = expectIdentifier(state);
+    eatWhitespace(state);
     expect(state, COLON);
+    eatWhitespace(state);
     object[propertyName] = expectValue(state);
     if (nextIs(state, COMMA)) {
       expect(state, COMMA);
@@ -278,7 +286,9 @@ const parser = (tokens) => {
   }
   while (continueLoop) {
     const propertyName = expectIdentifier(state);
+    eatWhitespace(state);
     expect(state, COLON);
+    eatWhitespace(state);
     object[propertyName] = expectValue(state);
     if (nextIs(state, COMMA)) {
       expect(state, COMMA);
@@ -293,6 +303,7 @@ const parser = (tokens) => {
 };
 
 module.exports = {
+  tokenToString,
   read: (code) => {
     const tokens = tokenizer(code);
     return parser(tokens);
