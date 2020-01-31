@@ -10,7 +10,7 @@ jest.mock('open');
 describe('plugins.file', () => {
   describe('JSFile', () => {
     test('getAbsolutePath', async () => {
-      const f = file.convertToJSFile('test.text');
+      const f = file.convertToJSFile('fixtures/test.text');
       await f.setBytes([], true);
       expect(f.exists()).toBe(true);
       expect(f.isAbsolute()).toBe(false);
@@ -21,8 +21,8 @@ describe('plugins.file', () => {
       await expect(f.canWrite()).resolves.toBe(true);
       expect(f.lastModified()).toBeDefined();
       expect(f.getName()).toBe('test.text');
-      expect(f.getPath()).toBe(process.cwd());
-      expect(f.getAbsolutePath()).toBe(process.cwd());
+      expect(f.getPath()).toBe(path.join(process.cwd(), 'fixtures'));
+      expect(f.getAbsolutePath()).toBe(path.join(process.cwd(), 'fixtures'));
       expect(f.getContentType()).toBe('application/octet-stream');
       expect(f.size()).toBe(0);
     });
@@ -132,7 +132,9 @@ describe('plugins.file', () => {
   });
 
   test('openFile works', async () => {
-    const myPDF = file.createFile('my.pdf');
+    const myPDF = file.createFile(
+      path.join(process.cwd(), 'fixtures', 'my.pdf'),
+    );
     myPDF.setBytes([65], true);
     file.openFile(myPDF);
     expect(open).toHaveBeenCalled();
