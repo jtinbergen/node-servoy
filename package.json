@@ -19,7 +19,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
     "eslint-config-prettier": "^6.7.0",
-    "jest": "^24.8.0"
+    "jest": "^29.3.1"
   },
   "dependencies": {
     "open": "^7.0.0",
