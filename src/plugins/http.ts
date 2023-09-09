@@ -52,22 +52,22 @@ class HttpRequest {
         this.options = options;
     }
 
-    addHeader(headerName: string, value: any) {
+    public addHeader(headerName: string, value: any) {
         this.options.headers = this.options.headers || {};
         this.options.headers[headerName] = value;
         return this.options.headers[headerName] === value;
     }
 
-    setCharset(charSet: any) {
+    public setCharset(charSet: any) {
         this.charSet = charSet;
     }
 
-    setBodyContent(content: any, mimeType: any) {
+    public setBodyContent(content: any, mimeType: any) {
         this.body = Buffer.from(content);
         this.mimeType = mimeType;
     }
 
-    async executeAsyncRequest(
+    public async executeAsyncRequest(
         username?: Function,
         password?: Function,
         workstation?: Function,
@@ -112,7 +112,7 @@ class HttpRequest {
         req.end();
     }
 
-    async executeRequest(
+    public async executeRequest(
         username?: Function,
         password?: Function,
         workstation?: Function,
@@ -182,47 +182,47 @@ class HttpClient {
         });
     }
 
-    createGetRequest(uri: string) {
+    public createGetRequest(uri: string) {
         return HttpClient.createRequest('GET', uri);
     }
 
-    createHeadRequest(uri: string) {
+    public createHeadRequest(uri: string) {
         return HttpClient.createRequest('HEAD', uri);
     }
 
-    createOptionsRequest(uri: string) {
+    public createOptionsRequest(uri: string) {
         return HttpClient.createRequest('OPTIONS', uri);
     }
 
-    createPostRequest(uri: string) {
+    public createPostRequest(uri: string) {
         return HttpClient.createRequest('POST', uri);
     }
 
-    createPutRequest(uri: string) {
+    public createPutRequest(uri: string) {
         return HttpClient.createRequest('PUT', uri);
     }
 
-    createTraceRequest(uri: string) {
+    public createTraceRequest(uri: string) {
         return HttpClient.createRequest('TRACE', uri);
     }
 
-    createDeleteRequest(uri: string) {
+    public createDeleteRequest(uri: string) {
         return HttpClient.createRequest('DELETE', uri);
     }
 
-    getCookie(cookieName: string) {
+    public getCookie(cookieName: string) {
         throw new Error('Not implemented.');
     }
 
-    getCookies() {
+    public getCookies() {
         throw new Error('Not implemented.');
     }
 
-    setClientProxyCredentials(userName: string, password: string) {
+    public setClientProxyCredentials(userName: string, password: string) {
         throw new Error('Not implemented.');
     }
 
-    setCookie(
+    public setCookie(
         cookieName: string,
         cookieValue: string,
         domain: string,
@@ -233,7 +233,7 @@ class HttpClient {
         throw new Error('Not implemented.');
     }
 
-    setTimeout(msTimeout: number) {
+    public setTimeout(msTimeout: number) {
         HttpClient.defaultTimeout = msTimeout;
     }
 }

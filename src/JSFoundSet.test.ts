@@ -1,22 +1,25 @@
-const DatabaseManager = require('./DatabaseManager');
+import { DatabaseManager } from './DatabaseManager';
 
 describe.skip('JSFoundSet', () => {
-  beforeEach(() => {
-    DatabaseManager.registerServer({
-      name: 'postgres',
-      poolSize: 10,
-      connectionString: 'postgresql://postgres:postgres@localhost/postgres',
+    let databaseManager: DatabaseManager;
+
+    beforeEach(() => {
+        databaseManager = new DatabaseManager();
+        databaseManager.registerServer({
+            name: 'postgres',
+            poolSize: 10,
+            connectionString: 'postgresql://postgres:postgres@localhost/postgres',
+        });
     });
-  });
 
-  afterEach(() => {
-    DatabaseManager.getServer('postgres').closeAllConnections();
-    DatabaseManager.unregisterServer('postgres');
-  });
+    afterEach(() => {
+        databaseManager.getServer('postgres').closeAllConnections();
+        databaseManager.unregisterServer('postgres');
+    });
 
-  test('databaseManager can create foundset', () => {
-    const databaseManager = DatabaseManager.getInstance();
-    const foundset = databaseManager.getFoundSet('postgres', 'postgres');
-    expect(foundset).toBeDefined();
-  });
+    test('databaseManager can create foundset', () => {
+        const databaseManagerInstance = databaseManager.getInstance();
+        const foundset = databaseManagerInstance.getFoundSet('postgres', 'postgres');
+        expect(foundset).toBeDefined();
+    });
 });

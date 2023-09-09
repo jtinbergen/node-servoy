@@ -55,20 +55,6 @@ export class DatabaseManagerInstance {
         this.aliasMapping.set(sourceName, destinationName);
     }
 
-    /**
-     * Adds a filter to all the foundsets based on a table.
-     *
-     * Note: if null is provided as the tablename the filter will be applied on all tables with the dataprovider name.
-     * A dataprovider can have multiple filters defined, they will all be applied. returns true if the tablefilter could be applied.
-     *
-     * Parameters
-     * String serverName The name of the database server connection for the specified table name.
-     * String tableName The name of the specified table.
-     * String dataprovider A specified dataprovider column name.
-     * String operator One of "=, <, >, >=, <=, !=, LIKE, or IN" optionally augmented with modifiers "#" (ignore case) or "^||" (or-is-null).
-     * String value
-     * String name
-     */
     public addTableFilterParam(
         serverName: string,
         tableName: string,

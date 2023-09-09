@@ -10,7 +10,7 @@ class JSFile {
         this.filename = filename;
     }
 
-    refreshInformation() {
+    public refreshInformation() {
         return new Promise((resolve, reject) => {
             fs.stat(this.filename, (error, info) => {
                 if (error) {
@@ -23,7 +23,7 @@ class JSFile {
         });
     }
 
-    testForPermission(type: number) {
+    public testForPermission(type: number) {
         return new Promise((resolve, reject) => {
             fs.access(this.filename, type, (err) => {
                 if (err) {
@@ -36,89 +36,89 @@ class JSFile {
         });
     }
 
-    async canRead() {
+    public async canRead() {
         return this.testForPermission(fs.constants.R_OK);
     }
 
-    async canWrite() {
+    public async canWrite() {
         return this.testForPermission(fs.constants.W_OK);
     }
 
-    createNewFile() {}
+    public createNewFile() {}
 
-    deleteFile() {
+    public deleteFile() {
         fs.unlinkSync(this.filename);
     }
 
-    getAbsolutePath() {
+    public getAbsolutePath() {
         return path.parse(path.resolve(this.filename)).dir;
     }
 
-    exists() {
+    public exists() {
         return fs.existsSync(this.getAbsoluteFile());
     }
 
-    getAbsoluteFile() {
+    public getAbsoluteFile() {
         return path.resolve(this.filename);
     }
 
-    getContentType() {
+    public getContentType() {
         return 'application/octet-stream';
     }
 
-    getName() {
+    public getName() {
         return path.parse(this.filename).base;
     }
 
-    getParent() {}
+    public getParent() {}
 
-    getParentFile() {}
+    public getParentFile() {}
 
-    getPath() {
+    public getPath() {
         return path.parse(path.resolve(this.filename)).dir;
     }
 
-    isAbsolute() {
+    public isAbsolute() {
         return path.resolve(this.filename) === this.filename;
     }
 
-    isDirectory() {
+    public isDirectory() {
         return fs.existsSync(this.filename) && fs.lstatSync(this.filename).isDirectory();
     }
 
-    isFile() {
+    public isFile() {
         return fs.existsSync(this.filename) && fs.lstatSync(this.filename).isFile();
     }
 
-    isHidden() {
+    public isHidden() {
         return false;
     }
 
-    lastModified() {
+    public lastModified() {
         return fs.statSync(this.filename).mtime;
     }
 
-    list() {
+    public list() {
         throw new Error('Not implemented');
     }
 
-    listFiles() {
+    public listFiles() {
         throw new Error('Not implemented');
     }
 
-    mkdir() {
+    public mkdir() {
         throw new Error('Not implemented');
     }
 
-    mkdirs() {
+    public mkdirs() {
         throw new Error('Not implemented');
     }
 
-    renameTo() {
+    public renameTo() {
         throw new Error('Not implemented');
     }
 
-    async getBytes(): Promise<any> {
+    public async getBytes(): Promise<any> {
         if (!this.exists()) {
             return Buffer.from([]);
         }
@@ -135,7 +135,7 @@ class JSFile {
         });
     }
 
-    setBytes(bytes: any, createFile: boolean) {
+    public setBytes(bytes: any, createFile: boolean) {
         if (!this.exists() && !createFile) {
             return false;
         }
@@ -151,15 +151,15 @@ class JSFile {
         });
     }
 
-    setLastModified() {
+    public setLastModified() {
         return false;
     }
 
-    setReadOnly() {
+    public setReadOnly() {
         return false;
     }
 
-    size() {
+    public size() {
         const stats = fs.statSync(this.filename);
         return stats.size;
     }

@@ -36,15 +36,15 @@ export class PostgresServer {
         this.availableConnections = [];
     }
 
-    getOpenConnectionCount() {
+    public getOpenConnectionCount() {
         return this.openConnections.length;
     }
 
-    getAvailableConnectionCount() {
+    public getAvailableConnectionCount() {
         return this.availableConnections.length;
     }
 
-    connectToDatabase(): Promise<pg.Client> {
+    public connectToDatabase(): Promise<pg.Client> {
         let client = this.availableConnections.pop();
         if (client) {
             return Promise.resolve(client);
@@ -80,7 +80,7 @@ export class PostgresServer {
         });
     }
 
-    closeAllConnections() {
+    public closeAllConnections() {
         this.openConnections.map((connection) => {
             connection.end();
         });
@@ -92,7 +92,7 @@ export class PostgresServer {
         this.openConnections = [];
     }
 
-    async getDatabaseProductName(callback: Function) {
+    public async getDatabaseProductName(callback: Function) {
         return this.databaseManagerInstance.getDataSetByQuery(
             'postgres',
             'select version()',
@@ -104,11 +104,11 @@ export class PostgresServer {
         );
     }
 
-    async getTables() {
+    public async getTables() {
         throw new Error('Not implemented');
     }
 
-    sql(query: string, args: any) {
+    public sql(query: string, args: any) {
         while (query.indexOf('?') > -1) {
             let arg = args.shift();
             if (typeof arg === 'string') {
@@ -121,7 +121,7 @@ export class PostgresServer {
         return query;
     }
 
-    async getClient() {
+    public async getClient() {
         return {
             getDataSetByQuery: async (
                 sqlQuery: string,
@@ -167,7 +167,7 @@ export class PostgresServer {
         };
     }
 
-    convertToJSColumn(pgType: JSColumn, name: string) {
+    public convertToJSColumn(pgType: JSColumn, name: string) {
         if (this.pg_types[pgType] === undefined) {
             throw new Error(`Unknown dataTypeID: ${pgType.toString()} (${name})`);
         }
@@ -175,7 +175,7 @@ export class PostgresServer {
         return this.pg_types[pgType];
     }
 
-    async getTable(serverName: string, tableName: string) {
+    public async getTable(serverName: string, tableName: string) {
         const table = new JSTable({
             databaseManager: new DatabaseManager(),
             serverName,
