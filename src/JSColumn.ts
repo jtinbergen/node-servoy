@@ -1,0 +1,17 @@
+export enum JSColumn {
+    DATABASE_IDENTITY = 0,
+    DATABASE_SEQUENCE = 1,
+    DATETIME = 2,
+    EXCLUDED_COLUMN = 3,
+    INTEGER = 4,
+    MEDIA = 5,
+    NONE = 6,
+    NUMBER = 7,
+    PK_COLUMN = 8,
+    ROWID_COLUMN = 9,
+    SERVOY_SEQUENCE = 10,
+    TENANT_COLUMN = 14,
+    TEXT = 11,
+    UUID_COLUMN = 12,
+    UUID_GENERATOR = 13,
+}
