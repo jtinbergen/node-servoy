@@ -1,7 +1,7 @@
 {
   "name": "node-servoy",
   "version": "1.4.0",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "repository": "https://github.com/jtinbergen/node-servoy.git",
   "author": "jaapjan@tinbergen.net",
   "license": "MIT",
@@ -10,9 +10,7 @@
     "test:watch": "jest --watch",
     "preversion": "npm test",
     "postversion": "git push && git push --tags",
-    "build:types": "tsc --emitDeclarationOnly --declaration",
-    "build:js": "tsc",
-    "build:ts": "npm run build:types && npm run build:js"
+    "build": "tsc"
   },
   "dependencies": {
     "@types/pg": "^8.10.2",
