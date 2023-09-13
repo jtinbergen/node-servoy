@@ -18,9 +18,9 @@ const execProgram = async (cmd, args, options) => new Promise((resolve, reject) 
     childprocess.on('close', (code) => {
         const result = { code, stdout, stderr };
         if (code !== 0) {
-            return reject(result);
+            return reject(JSON.stringify(result));
         }
-        return resolve(result);
+        return resolve(JSON.stringify(result));
     });
 });
 const executeProgram = async (program, params, environmentVars, cwd) => {
@@ -76,7 +76,7 @@ const getUUID = (arg) => {
     };
 };
 exports.getUUID = getUUID;
-const getVersion = () => 1;
+const getVersion = () => '1';
 exports.getVersion = getVersion;
 const isInDeveloper = () => false;
 exports.isInDeveloper = isInDeveloper;

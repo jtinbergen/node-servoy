@@ -72,11 +72,11 @@ class JSDataSet {
             this.rows.splice(index - 1, 1);
         }
     }
-    getAsHTML(escape_values, escape_spaces, allowMultiLine, useIndent, addColumnInformation) {
+    getAsHTML(escape_values, escape_spaces, multi_line_markup, pretty_indent, add_column_names) {
         let html = '';
         html += `<p>Lines: ${this.getMaxRowIndex()}</p>`;
         html += '<table>';
-        if (addColumnInformation) {
+        if (add_column_names) {
             const columnNames = this.getColumnNames();
             html += '<tr style="background-color: #dddddd">';
             html += '<th style="font-style: italic color: gray">Index</th>';
@@ -146,12 +146,12 @@ class JSDataSet {
             this.rows[row].splice(col - 1, 1);
         }
     }
-    sort(columnIndex, ascendingOrDescending) {
+    sort(col, sort_direction) {
         this.rows = this.rows.sort((a, b) => {
-            if (a[columnIndex - 1] < b[columnIndex - 1])
-                return ascendingOrDescending ? -1 : 1;
-            if (a[columnIndex - 1] > b[columnIndex - 1])
-                return ascendingOrDescending ? 1 : -1;
+            if (a[col - 1] < b[col - 1])
+                return sort_direction ? -1 : 1;
+            if (a[col - 1] > b[col - 1])
+                return sort_direction ? 1 : -1;
             return 0;
         });
     }

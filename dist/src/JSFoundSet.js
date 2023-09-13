@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JSFoundSet = void 0;
 const JSRecord_1 = require("./JSRecord");
 class JSFoundSet {
-    constructor({ databaseManager, tableName, serverName, table, }) {
+    constructor({ databaseManager, tableName, serverName, table }) {
         this.databaseManager = databaseManager;
         this.tableName = tableName;
         this.serverName = serverName;

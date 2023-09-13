@@ -1,5 +1,10 @@
 import { JSColumn } from './JSColumn';
 
+export type JSDatasetParameters = {
+    rows?: string;
+    columns?: string;
+};
+
 export class ColumnInfo {
     name: string;
     type: JSColumn;
@@ -20,7 +25,11 @@ export class JSDataSet {
     rows: any[] = [];
     columns: any[] = [];
 
-    constructor(json?: any) {
+    /**
+     * Creates a new instance of the JSDataSet class.
+     * @param json Optional JSON object to initialize the dataset with.
+     */
+    constructor(json?: JSDatasetParameters) {
         if (!(this instanceof JSDataSet)) {
             return new JSDataSet();
         }
@@ -31,22 +40,44 @@ export class JSDataSet {
         }
     }
 
-    public getMaxRowIndex() {
+    /**
+     * Get the number of rows in the dataset.
+     * @returns {number} The maximum row index of the dataset.
+     */
+    public getMaxRowIndex(): number {
         return this.rows.length;
     }
 
-    public getMaxColumnIndex() {
+    /**
+     * Get the number of columns in the dataset.
+     * @returns {number} The maximum column index of the dataset.
+     */
+    public getMaxColumnIndex(): number {
         return this.columns.length;
     }
 
-    public getColumnType(index: number) {
+    /**
+     * Returns the type of the column at the specified index.
+     * @param index The index of the column to get the type of.
+     * @returns {JSColumn} The type of the column at the specified index, or null if the index is out of range.
+     */
+    public getColumnType(index: number): JSColumn {
         return index >= 1 && index <= this.columns.length ? this.columns[index - 1].type : null;
     }
 
-    public getColumnName(index: number) {
+    /**
+     * Returns the name of the column at the specified index.
+     * @param index The index of the column to retrieve the name for.
+     * @returns {string} The name of the column at the specified index, or null if the index is out of range.
+     */
+    public getColumnName(index: number): string {
         return index >= 1 && index <= this.columns.length ? this.columns[index - 1].name : null;
     }
 
+    /**
+     * Returns an array of column names for this dataset.
+     * @returns {string[]} An array of column names.
+     */
     public getColumnNames(): string[] {
         const names = [];
         for (let i = 0; i < this.getMaxColumnIndex(); i += 1) {
@@ -56,6 +87,12 @@ export class JSDataSet {
         return names;
     }
 
+    /**
+     * Adds a new column to the dataset.
+     * @param name The name of the column. If not provided, a default name will be used.
+     * @param index The index at which to insert the new column. If not provided, the column will be added to the end of the dataset.
+     * @param type The type of the column.
+     */
     public addColumn(name?: string, index?: number, type?: JSColumn) {
         const col = new ColumnInfo({ name: name || 'unnamed', type });
 
@@ -67,6 +104,11 @@ export class JSDataSet {
         this.columns.push(col);
     }
 
+    /**
+     * Add a row to the dataset.
+     * @param index The index at which to insert the new row. If not provided, the row will be added to the end of the dataset.
+     * @param array The array of values to add to the row.
+     */
     public addRow(index: number | any[], array?: any[]) {
         if (index instanceof Array) {
             array = index;
@@ -89,23 +131,36 @@ export class JSDataSet {
         this.rows.push(array);
     }
 
+    /**
+     * Removes a row from the dataset at the specified index.
+     * @param index The index of the row to remove.
+     */
     public removeRow(index: number) {
         if (index >= 1 && index <= this.rows.length) {
             this.rows.splice(index - 1, 1);
         }
     }
 
+    /**
+     * Get the dataset as an html table.
+     * @param escape_values If true, replaces illegal HTML characters with corresponding valid escape sequences.
+     * @param escape_spaces If true, replaces text spaces with non-breaking space tags ( ) and tabs by four non-breaking space tags.
+     * @param multi_line_markup If true, multiLineMarkup will enforce new lines that are in the text; single new lines will be replaced by <br>, multiple new lines will be replaced by <p>
+     * @param pretty_indent If true, adds indentation for more readable HTML code.
+     * @param add_column_names If false, column headers will not be added to the table.
+     * @returns {string} The dataset as an HTML table.
+     */
     public getAsHTML(
         escape_values: boolean,
         escape_spaces: boolean,
-        allowMultiLine: boolean,
-        useIndent: boolean,
-        addColumnInformation: boolean,
-    ) {
+        multi_line_markup: boolean,
+        pretty_indent: boolean,
+        add_column_names: boolean,
+    ): string {
         let html = '';
         html += `<p>Lines: ${this.getMaxRowIndex()}</p>`;
         html += '<table>';
-        if (addColumnInformation) {
+        if (add_column_names) {
             const columnNames = this.getColumnNames();
             html += '<tr style="background-color: #dddddd">';
             html += '<th style="font-style: italic color: gray">Index</th>';
@@ -135,7 +190,12 @@ export class JSDataSet {
         return html;
     }
 
-    public getColumnAsArray(column: number) {
+    /**
+     * Returns an array of values for a given column index.
+     * @param column The index of the column to retrieve values from.
+     * @returns An array of values for the given column index, or null if the column index is out of range.
+     */
+    public getColumnAsArray(column: number): any[] {
         const values = [];
         if (column < 1 || column > this.getMaxColumnIndex()) {
             return null;
@@ -150,7 +210,12 @@ export class JSDataSet {
         return values;
     }
 
-    public getRowAsArray(row: number) {
+    /**
+     * Returns the specified row as an array.
+     * @param row The index of the row to retrieve (1-based).
+     * @returns An array containing the values of the specified row, or null if the row index is out of range.
+     */
+    public getRowAsArray(row: number): any[] {
         if (row < 1 || row > this.getMaxRowIndex()) {
             return null;
         }
@@ -158,7 +223,13 @@ export class JSDataSet {
         return [...this.rows[row - 1]];
     }
 
-    public getValue(row: number, col: number) {
+    /**
+     * Returns the value at the specified row and column index.
+     * @param row The row index (1-based).
+     * @param col The column index (1-based).
+     * @returns The value at the specified row and column index, or null if the indexes are out of range.
+     */
+    public getValue(row: number, col: number): any {
         if (col < 1 || col > this.getMaxColumnIndex()) {
             return null;
         }
@@ -170,6 +241,13 @@ export class JSDataSet {
         return this.rows[row - 1][col - 1];
     }
 
+    /**
+     * Sets the value of a cell in the dataset.
+     * @param row The row index of the cell to set (1-based).
+     * @param col The column index of the cell to set (1-based).
+     * @param value The value to set in the cell.
+     * @returns The value that was set in the cell.
+     */
     public setValue(row: number, col: number, value: any) {
         if (col < 1 || col > this.getMaxColumnIndex()) {
             return null;
@@ -183,6 +261,10 @@ export class JSDataSet {
         return value;
     }
 
+    /**
+     * Removes a column from the dataset.
+     * @param col The index of the column to remove.
+     */
     public removeColumn(col: number) {
         if (col < 1 || col > this.getMaxColumnIndex()) {
             return;
@@ -194,10 +276,15 @@ export class JSDataSet {
         }
     }
 
-    public sort(columnIndex: number, ascendingOrDescending: boolean) {
+    /**
+     * Sorts the rows of the dataset based on the values in the specified column.
+     * @param col The index of the column to sort by.
+     * @param sort_direction If true, sorts the rows in ascending order. If false, sorts the rows in descending order.
+     */
+    public sort(col: number, sort_direction: boolean) {
         this.rows = this.rows.sort((a, b) => {
-            if (a[columnIndex - 1] < b[columnIndex - 1]) return ascendingOrDescending ? -1 : 1;
-            if (a[columnIndex - 1] > b[columnIndex - 1]) return ascendingOrDescending ? 1 : -1;
+            if (a[col - 1] < b[col - 1]) return sort_direction ? -1 : 1;
+            if (a[col - 1] > b[col - 1]) return sort_direction ? 1 : -1;
             return 0;
         });
     }
