@@ -1,14 +1,72 @@
 {
-  "extends": ["airbnb", "prettier"],
-  "parser": "babel-eslint",
+  "root": true,
+  "extends": [
+    "google",
+    "eslint-config-prettier",
+    "plugin:@typescript-eslint/eslint-recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "eslint-plugin-prettier"
+  ],
   "env": {
-    "browser": false,
-    "commonjs": true,
     "es6": true,
     "node": true,
     "jest": true
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "ecmaFeatures": {},
     "sourceType": "module"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  },
+  "ignorePatterns": [
+    "*.d.ts"
+  ],
+  "rules": {
+    "import/prefer-default-export": 0,
+    "strict": 0,
+    "no-restricted-syntax": 0,
+    "func-names": "warn",
+    "max-len": 0,
+    "no-console": 0,
+    "no-continue": 0,
+    "no-await-in-loop": 0,
+    "import/extensions": 0,
+    "react/require-default-props": 0,
+    "camelcase": 0,
+    "comma-dangle": "off",
+    "eqeqeq": "error",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "indent": "off",
+    "prettier/prettier": "error",
+    "no-unused-vars": "off",
+    "require-jsdoc": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": [
+      "error"
+    ]
   }
 }

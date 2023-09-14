@@ -52,7 +52,3 @@ jspm_packages
 config.gypi
 CVS
 npm-debug.log
-
-#test
-my.pdf
-test.text
