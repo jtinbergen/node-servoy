@@ -45,11 +45,12 @@ class HttpResponse {
 class HttpRequest {
     options: any;
     charSet: any;
-    body: Buffer;
+    body: Buffer | null;
     mimeType: any;
 
     constructor(options: any) {
         this.options = options;
+        this.body = null;
     }
 
     public addHeader(headerName: string, value: any) {
@@ -95,14 +96,18 @@ class HttpRequest {
             });
 
             res.on('end', () => {
-                successCallback(buffer);
+                if (successCallback) {
+                    successCallback(buffer);
+                }
             });
         });
 
         req.setTimeout(this.options.timeout);
         req.on('error', (e) => {
             req.end();
-            errorCallback(e);
+            if (errorCallback) {
+                errorCallback(e);
+            }
         });
 
         if (this.body) {

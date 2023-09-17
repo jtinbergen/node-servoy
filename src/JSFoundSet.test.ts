@@ -13,7 +13,7 @@ describe.skip('JSFoundSet', () => {
     });
 
     afterEach(() => {
-        databaseManager.getServer('postgres').closeAllConnections();
+        databaseManager.getServer('postgres')!.closeAllConnections();
         databaseManager.unregisterServer('postgres');
     });
 

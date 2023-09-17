@@ -96,7 +96,7 @@ export class JSDataSet {
     public addColumn(name?: string, index?: number, type?: JSColumn) {
         const col = new ColumnInfo({ name: name || 'unnamed', type });
 
-        if (index >= 1 && index <= this.columns.length) {
+        if (index && index >= 1 && index <= this.columns.length) {
             this.columns.splice(index - 1, 0, col);
             return;
         }
@@ -120,15 +120,17 @@ export class JSDataSet {
             return;
         }
 
-        for (let i = 0; i < array.length; i += 1) {
-            const type = this.getColumnType(i + 1);
-            if (type === JSColumn.NUMBER) {
-                array[i] =
-                    array[i] && typeof array[i] !== 'number' ? parseFloat(array[i]) : array[i];
+        if (array) {
+            for (let i = 0; i < array.length; i += 1) {
+                const type = this.getColumnType(i + 1);
+                if (type === JSColumn.NUMBER) {
+                    array[i] =
+                        array[i] && typeof array[i] !== 'number' ? parseFloat(array[i]) : array[i];
+                }
             }
-        }
 
-        this.rows.push(array);
+            this.rows.push(array);
+        }
     }
 
     /**
@@ -195,7 +197,7 @@ export class JSDataSet {
      * @param column The index of the column to retrieve values from.
      * @returns An array of values for the given column index, or null if the column index is out of range.
      */
-    public getColumnAsArray(column: number): any[] {
+    public getColumnAsArray(column: number): any[] | null {
         const values = [];
         if (column < 1 || column > this.getMaxColumnIndex()) {
             return null;
@@ -215,7 +217,7 @@ export class JSDataSet {
      * @param row The index of the row to retrieve (1-based).
      * @returns An array containing the values of the specified row, or null if the row index is out of range.
      */
-    public getRowAsArray(row: number): any[] {
+    public getRowAsArray(row: number): any[] | null {
         if (row < 1 || row > this.getMaxRowIndex()) {
             return null;
         }

@@ -21,12 +21,16 @@ export class DatabaseManagerInstance {
         this.DatabaseManager = DatabaseManager;
         this.autoSave = false;
         this.aliasMapping = new Map();
+        this.globalFilters = {};
     }
 
     public aliasedServerName(serverName: string) {
         let mappedAlias = serverName;
         if (this.aliasMapping.has(serverName)) {
-            mappedAlias = this.aliasMapping.get(serverName);
+            const serverAlias = this.aliasMapping.get(serverName);
+            if (serverAlias) {
+                mappedAlias = serverAlias;
+            }
         }
 
         return mappedAlias;
@@ -48,6 +52,10 @@ export class DatabaseManagerInstance {
 
     public async getDatabaseProductName(serverName: string) {
         const server = this.DatabaseManager.getServer(this.aliasedServerName(serverName));
+        if (!server) {
+            throw new Error(`Server ${serverName} not found`);
+        }
+
         return server.getDatabaseProductName(() => {});
     }
 
@@ -92,6 +100,10 @@ export class DatabaseManagerInstance {
         callback?: Function,
     ): Promise<JSDataSet> {
         const server = this.DatabaseManager.getServer(this.aliasedServerName(serverName));
+        if (!server) {
+            throw new Error(`Server ${serverName} not found`);
+        }
+
         const client = await server.getClient();
         const result = await client.getDataSetByQuery(sqlQuery, args, maxReturnedRows);
 

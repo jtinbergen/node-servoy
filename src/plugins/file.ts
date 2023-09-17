@@ -279,7 +279,7 @@ const readFile = async (file: string | JSFile, size?: number): Promise<Buffer> =
                 return;
             }
 
-            if (data.length > size) {
+            if (size && data.length > size) {
                 resolve(data.slice(0, size));
             }
 

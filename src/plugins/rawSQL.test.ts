@@ -14,13 +14,13 @@ describe('plugins.rawSQL', () => {
     });
 
     afterEach(() => {
-        databaseManager.getServer('postgres').closeAllConnections();
+        databaseManager.getServer('postgres')!.closeAllConnections();
         databaseManager.unregisterServer('postgres');
     });
 
     test('databaseManager Instance shares connection info from DatabaseManager', async () => {
         let result = false;
-        result = await rawSQL.executeSQL('postgres', null, 'SELECT 1');
+        result = await rawSQL.executeSQL('postgres', '', 'SELECT 1');
         expect(result).toBeDefined();
     });
 });

@@ -68,7 +68,7 @@ export class JSFoundSet {
      * @param recordIndex Index	record index (1-based).
      * @returns {JSRecord} Record.
      */
-    async getRecord(recordIndex: number): Promise<JSRecord> {
+    async getRecord(recordIndex: number): Promise<JSRecord | null | undefined> {
         if (!this.records.has(recordIndex)) {
             const page = {
                 from: Math.floor(recordIndex / 200) * 200,

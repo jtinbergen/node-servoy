@@ -13,12 +13,12 @@ describe.skip('databaseManager', () => {
     });
 
     afterEach(() => {
-        databaseManager.getServer('postgres').closeAllConnections();
+        databaseManager.getServer('postgres')!.closeAllConnections();
         databaseManager.unregisterServer('postgres');
     });
 
     afterAll(() => {
-        databaseManager.getServer('postgres').closeAllConnections();
+        databaseManager.getServer('postgres')!.closeAllConnections();
     });
 
     test('databaseManager can register server', () => {
@@ -39,8 +39,8 @@ describe.skip('databaseManager', () => {
 
     test('pooledConnections are reused', async () => {
         const databaseManagerInstance = databaseManager.getInstance();
-        expect(databaseManager.getServer('postgres').getAvailableConnectionCount()).toEqual(0);
-        expect(databaseManager.getServer('postgres').getOpenConnectionCount()).toEqual(0);
+        expect(databaseManager.getServer('postgres')!.getAvailableConnectionCount()).toEqual(0);
+        expect(databaseManager.getServer('postgres')!.getOpenConnectionCount()).toEqual(0);
 
         const results = await Promise.all([
             databaseManagerInstance.getDataSetByQuery('postgres', 'SELECT 1', [], -1),
@@ -58,11 +58,11 @@ describe.skip('databaseManager', () => {
             databaseManagerInstance.getDataSetByQuery('postgres', 'SELECT 13', [], -1),
         ]);
 
-        expect(databaseManager.getServer('postgres').getAvailableConnectionCount()).toEqual(10);
-        expect(databaseManager.getServer('postgres').getOpenConnectionCount()).toEqual(10);
-        databaseManager.getServer('postgres').closeAllConnections();
-        expect(databaseManager.getServer('postgres').getAvailableConnectionCount()).toEqual(0);
-        expect(databaseManager.getServer('postgres').getOpenConnectionCount()).toEqual(0);
+        expect(databaseManager.getServer('postgres')!.getAvailableConnectionCount()).toEqual(10);
+        expect(databaseManager.getServer('postgres')!.getOpenConnectionCount()).toEqual(10);
+        databaseManager.getServer('postgres')!.closeAllConnections();
+        expect(databaseManager.getServer('postgres')!.getAvailableConnectionCount()).toEqual(0);
+        expect(databaseManager.getServer('postgres')!.getOpenConnectionCount()).toEqual(0);
         expect(results).toBeDefined();
         expect(results.length).toEqual(13);
     });

@@ -1,48 +1,8 @@
-"use strict";
-var __create = Object.create;
 var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// src/index.ts
-var src_exports = {};
-__export(src_exports, {
-  DatabaseManager: () => DatabaseManager,
-  JSColumn: () => JSColumn,
-  JSDataSet: () => JSDataSet,
-  JSFoundSet: () => JSFoundSet,
-  application: () => application_exports,
-  constants: () => constants_exports,
-  datasources: () => datasources_exports,
-  globals: () => globals_exports,
-  parser: () => parser_exports,
-  plugins: () => plugins,
-  utils: () => utils_exports
-});
-module.exports = __toCommonJS(src_exports);
 
 // src/globals.ts
 var globals_exports = {};
@@ -583,7 +543,7 @@ var DatabaseManagerInstance = class {
 };
 
 // src/PostgresServer.ts
-var pg = __toESM(require("pg"));
+import * as pg from "pg";
 
 // src/JSTable.ts
 var JSTable = class {
@@ -693,9 +653,9 @@ __export(application_exports, {
   output: () => output,
   sleep: () => sleep
 });
-var os = __toESM(require("os"));
-var uuid = __toESM(require("uuid"));
-var import_child_process = require("child_process");
+import * as os from "os";
+import * as uuid from "uuid";
+import { spawn } from "child_process";
 
 // src/constants.ts
 var constants_exports = {};
@@ -725,7 +685,7 @@ var APPLICATION_TYPES = /* @__PURE__ */ ((APPLICATION_TYPES2) => {
 var execProgram = async (cmd, args, options) => new Promise((resolve2, reject) => {
   let stdout = "";
   let stderr = "";
-  const childprocess = (0, import_child_process.spawn)(cmd, args.split(" "), options);
+  const childprocess = spawn(cmd, args.split(" "), options);
   childprocess.stdout.on("data", (data) => {
     stdout += data.toString();
   });
@@ -1095,9 +1055,9 @@ __export(http_exports, {
   getMediaData: () => getMediaData,
   getPageData: () => getPageData
 });
-var https = __toESM(require("https"));
-var http = __toESM(require("http"));
-var url = __toESM(require("url"));
+import * as https from "https";
+import * as http from "http";
+import * as url from "url";
 var HttpResponse = class {
   constructor({ data, statusCode, headers }) {
     this.data = data;
@@ -1409,10 +1369,10 @@ __export(file_exports, {
   writeFile: () => writeFile,
   writeTXTFile: () => writeTXTFile
 });
-var os2 = __toESM(require("os"));
-var fs = __toESM(require("fs"));
-var path = __toESM(require("path"));
-var open = __toESM(require("open"));
+import * as os2 from "os";
+import * as fs from "fs";
+import * as path from "path";
+import * as open from "open";
 var JSFile = class {
   constructor(filename) {
     this.filename = filename;
@@ -1929,18 +1889,17 @@ var plugins = {
   file: file_exports,
   rawSQL: rawSQL_exports
 };
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
+export {
   DatabaseManager,
   JSColumn,
   JSDataSet,
   JSFoundSet,
-  application,
-  constants,
-  datasources,
-  globals,
-  parser,
+  application_exports as application,
+  constants_exports as constants,
+  datasources_exports as datasources,
+  globals_exports as globals,
+  parser_exports as parser,
   plugins,
-  utils
-});
-//# sourceMappingURL=index.js.map
+  utils_exports as utils
+};
+//# sourceMappingURL=index.mjs.map
