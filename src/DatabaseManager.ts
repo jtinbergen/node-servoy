@@ -13,6 +13,7 @@ export class DatabaseManager {
 
     constructor() {
         this.servers = new Map();
+        this.autoSave = false;
     }
 
     public registerServer(server: Server) {
@@ -38,8 +39,11 @@ export class DatabaseManager {
             throw new Error('name property is required.');
         }
 
-        this.servers.get(serverName).closeAllConnections();
-        this.servers.delete(serverName);
+        const server = this.servers.get(serverName);
+        if (server) {
+            server.closeAllConnections();
+            this.servers.delete(serverName);
+        }
     }
 
     public getServer(serverName: string) {
@@ -48,6 +52,10 @@ export class DatabaseManager {
 
     public async getTable(serverName: string, tableName: string) {
         const server = this.getServer(serverName);
+        if (!server) {
+            throw new Error(`Server ${serverName} not found`);
+        }
+
         return server.getTable(serverName, tableName);
     }
 

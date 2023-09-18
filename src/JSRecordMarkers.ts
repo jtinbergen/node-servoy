@@ -6,7 +6,17 @@ export class JSRecordMarkers {
     onBeforeUpdateFailed: boolean;
     record: JSRecord;
 
-    constructor() {}
+    constructor(
+        hasErrors: boolean,
+        onBeforeInsertFailed: boolean,
+        onBeforeUpdateFailed: boolean,
+        record: JSRecord,
+    ) {
+        this.hasErrors = hasErrors;
+        this.onBeforeInsertFailed = onBeforeInsertFailed;
+        this.onBeforeUpdateFailed = onBeforeUpdateFailed;
+        this.record = record;
+    }
 
     public getGenericExceptions() {
         throw new Error('Not implemented');

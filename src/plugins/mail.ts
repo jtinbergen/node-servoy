@@ -3,7 +3,7 @@ type MailTransporter = {
     x?: boolean;
 };
 
-let implementation: MailTransporter = null;
+let implementation: MailTransporter;
 
 const setImplementation = (mailTransporter: MailTransporter) => {
     if (!mailTransporter.sendEmail || typeof mailTransporter.sendEmail !== 'function') {

@@ -61,7 +61,7 @@ export class PostgresServer {
                         return;
                     }
 
-                    resolve(client);
+                    resolve(client as pg.Client);
                 });
             });
         }

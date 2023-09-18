@@ -14,12 +14,12 @@ describe.skip('JSTable', () => {
     });
 
     afterEach(() => {
-        databaseManager.getServer('postgres').closeAllConnections();
+        databaseManager.getServer('postgres')!.closeAllConnections();
         databaseManager.unregisterServer('postgres');
     });
 
     afterAll(() => {
-        databaseManager.getServer('postgres').closeAllConnections();
+        databaseManager.getServer('postgres')!.closeAllConnections();
     });
 
     test('databaseManager can query JSTable', async () => {

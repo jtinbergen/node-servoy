@@ -5,7 +5,7 @@ import { JSRecordMarkers } from './JSRecordMarkers';
 type Target = { unsavedChanges: any[]; [key: string]: any };
 
 export class JSRecord {
-    exception: string;
+    exception: string | null;
     foundset: JSFoundSet;
     recordMarkers: JSRecordMarkers;
     unsavedChanges: any[];
@@ -26,6 +26,8 @@ export class JSRecord {
         for (let field in record) {
             this[field] = record[field];
         }
+
+        this.recordMarkers = this.createMarkers();
     }
 
     public createMarkers(): JSRecordMarkers {
