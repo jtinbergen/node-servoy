@@ -55,21 +55,103 @@ declare class JSDataSet {
     rowIndex: number;
     rows: any[];
     columns: any[];
+    /**
+     * Creates a new instance of the JSDataSet class.
+     * @param json Optional JSON object to initialize the dataset with.
+     */
     constructor(json?: JSDatasetParameters);
+    /**
+     * Get the number of rows in the dataset.
+     * @returns {number} The maximum row index of the dataset.
+     */
     getMaxRowIndex(): number;
+    /**
+     * Get the number of columns in the dataset.
+     * @returns {number} The maximum column index of the dataset.
+     */
     getMaxColumnIndex(): number;
+    /**
+     * Returns the type of the column at the specified index.
+     * @param index The index of the column to get the type of.
+     * @returns {JSColumn} The type of the column at the specified index, or null if the index is out of range.
+     */
     getColumnType(index: number): JSColumn;
+    /**
+     * Returns the name of the column at the specified index.
+     * @param index The index of the column to retrieve the name for.
+     * @returns {string} The name of the column at the specified index, or null if the index is out of range.
+     */
     getColumnName(index: number): string;
+    /**
+     * Returns an array of column names for this dataset.
+     * @returns {string[]} An array of column names.
+     */
     getColumnNames(): string[];
+    /**
+     * Adds a new column to the dataset.
+     * @param name The name of the column. If not provided, a default name will be used.
+     * @param index The index at which to insert the new column. If not provided, the column will be added to the end of the dataset.
+     * @param type The type of the column.
+     */
     addColumn(name?: string, index?: number, type?: JSColumn): void;
+    /**
+     * Add a row to the dataset.
+     * @param index The index at which to insert the new row. If not provided, the row will be added to the end of the dataset.
+     * @param array The array of values to add to the row.
+     */
     addRow(index: number | any[], array?: any[]): void;
+    /**
+     * Removes a row from the dataset at the specified index.
+     * @param index The index of the row to remove.
+     */
     removeRow(index: number): void;
+    /**
+     * Get the dataset as an html table.
+     * @param escape_values If true, replaces illegal HTML characters with corresponding valid escape sequences.
+     * @param escape_spaces If true, replaces text spaces with non-breaking space tags ( ) and tabs by four non-breaking space tags.
+     * @param multi_line_markup If true, multiLineMarkup will enforce new lines that are in the text; single new lines will be replaced by <br>, multiple new lines will be replaced by <p>
+     * @param pretty_indent If true, adds indentation for more readable HTML code.
+     * @param add_column_names If false, column headers will not be added to the table.
+     * @returns {string} The dataset as an HTML table.
+     */
     getAsHTML(escape_values: boolean, escape_spaces: boolean, multi_line_markup: boolean, pretty_indent: boolean, add_column_names: boolean): string;
+    /**
+     * Returns an array of values for a given column index.
+     * @param column The index of the column to retrieve values from.
+     * @returns An array of values for the given column index, or null if the column index is out of range.
+     */
     getColumnAsArray(column: number): any[] | null;
+    /**
+     * Returns the specified row as an array.
+     * @param row The index of the row to retrieve (1-based).
+     * @returns An array containing the values of the specified row, or null if the row index is out of range.
+     */
     getRowAsArray(row: number): any[] | null;
+    /**
+     * Returns the value at the specified row and column index.
+     * @param row The row index (1-based).
+     * @param col The column index (1-based).
+     * @returns The value at the specified row and column index, or null if the indexes are out of range.
+     */
     getValue(row: number, col: number): any;
+    /**
+     * Sets the value of a cell in the dataset.
+     * @param row The row index of the cell to set (1-based).
+     * @param col The column index of the cell to set (1-based).
+     * @param value The value to set in the cell.
+     * @returns The value that was set in the cell.
+     */
     setValue(row: number, col: number, value: any): any;
+    /**
+     * Removes a column from the dataset.
+     * @param col The index of the column to remove.
+     */
     removeColumn(col: number): void;
+    /**
+     * Sorts the rows of the dataset based on the values in the specified column.
+     * @param col The index of the column to sort by.
+     * @param sort_direction If true, sorts the rows in ascending order. If false, sorts the rows in descending order.
+     */
     sort(col: number, sort_direction: boolean): void;
 }
 
@@ -217,10 +299,32 @@ declare class JSFoundSet {
     multiSelect: boolean;
     records: Map<number, JSRecord>;
     selectedIndexes: number[];
+    /**
+     * Creates a new instance of the JSFoundSet class.
+     * @param parameters The parameters for the new instance.
+     */
     constructor({ databaseManager, tableName, serverName, table }: JSFoundSetParameters);
+    /**
+     * Get the records in the given range.
+     * @param from The start index (1-based).
+     * @param to The end index (1-based).
+     */
     getRecords(from: number, to: number): Promise<void>;
+    /**
+     * Get the record object at the given index.
+     * @param recordIndex Index	record index (1-based).
+     * @returns {JSRecord} Record.
+     */
     getRecord(recordIndex: number): Promise<JSRecord | null | undefined>;
+    /**
+     * Create a new record on top of the foundset and change selection to it. Returns -1 if the record can't be made.
+     * @returns {number} The index of the new record.
+     */
     newRecord(): number;
+    /**
+     * Get the number of records in this foundset.
+     * @returns {number} The number of records in this foundset.
+     */
     getSize(): Promise<number>;
 }
 
@@ -251,24 +355,97 @@ declare namespace constants {
   };
 }
 
+/**
+ * Execute a program and returns output. Specify the cmd as you would do in a console.
+ * @param program Full path of the program to execute.
+ * @param params An array of strings as program arguments.
+ * @param environmentVars Array of strings, each element of which has environment variable settings in the format name=value, or null if the subprocess should inherit the environment of the current process.
+ * @param cwd The working directory of the subprocess, or null if the subprocess should inherit the working directory of the current process.
+ * @returns {string} The output generated by the program execution.
+ */
 declare const executeProgram: (program: string, params: string, environmentVars: string[], cwd: any) => Promise<string>;
+/**
+ * Execute a program in the background. Specify the cmd as you would do in a console.
+ * @param program Full path of the program to execute.
+ * @param params An array of strings as program arguments.
+ * @param environmentVars Array of strings, each element of which has environment variable settings in the format name=value, or null if the subprocess should inherit the environment of the current process.
+ * @param cwd The working directory of the subprocess, or null if the subprocess should inherit the working directory of the current process.
+ * @returns {string} The output generated by the program execution.
+ */
 declare const executeProgramInBackground: (program: string, params: string, environmentVars: string[], cwd: any) => void;
+/**
+ * Stop and exit application.
+ */
 declare const exit: () => never;
+/**
+ * Get the application type.
+ * @returns {number} Constant application type.
+ */
 declare const getApplicationType: () => number;
+/**
+ * Get the name of the localhost.
+ * @returns {string} Name of the localhost.
+ */
 declare const getHostName: () => string;
+/**
+ * Returns the name of the operating system of the client.
+ * @returns {string} Name of the operating system of the client.
+ */
 declare const getOSName: () => string;
+/**
+ * Returns a date object initialized on server with current date and time.
+ * @returns {Date} Server time.
+ */
 declare const getServerTimeStamp: () => Date;
+/**
+ * Gets the HTTP server URL.
+ * @returns {string} The HTTP server URL.
+ */
 declare const getServerURL: () => string;
+/**
+ * Returns the name of the current solution.
+ * @returns {string} Current solution name.
+ */
 declare const getSolutionName: () => string;
+/**
+ * Get the solution release number.
+ * @returns {number} Current solution release number.
+ */
 declare const getSolutionRelease: () => number;
+/**
+ * Returns a new Date object representing the current date and time.
+ * @returns {Date} A Date object representing the current date and time.
+ */
 declare const getTimeStamp: () => Date;
+/**
+ * Get a new UUID object (also known as GUID) or convert the parameter (that can be string or byte array) to an UUID object.
+ * @param arg Optional string or byte array to convert to an UUID.
+ * @returns String and byte array representing an UUID.
+ */
 declare const getUUID: (arg: string) => {
     toString: () => string;
     toBytes: () => ArrayBuffer;
 };
+/**
+ * Returns the application version.
+ * @returns {string} Application version.
+ */
 declare const getVersion: () => string;
+/**
+ * Returns true if the solution is running in the developer.
+ * @returns {boolean} True if the solution is running in the developer, false otherwise.
+ */
 declare const isInDeveloper: () => boolean;
+/**
+ * Output something on the out stream.
+ * @param msg Object to send to output stream.
+ * @param level The log level where it should log to.
+ */
 declare const output: (msg: any, level: LOGGINGLEVEL) => void;
+/**
+ * Sleep for specified time (in milliseconds).
+ * @param ms Sleep time in milliseconds.
+ */
 declare const sleep: (ms: number) => Promise<number>;
 
 declare const application_executeProgram: typeof executeProgram;
@@ -308,21 +485,120 @@ declare namespace application {
   };
 }
 
+/**
+ * Returns a string containing the character for the unicode number.
+ * @param unicodeCharacterNumber The number indicating the unicode character.
+ * @returns {string} A string containing the unicode character.
+ */
 declare const getUnicodeCharacter: (unicodeCharacterNumber: number) => string;
+/**
+ * Format a number to have a defined fraction.
+ * @param number The number to format.
+ * @param digits Number of digits.
+ * @returns {string} The resulting number in text.
+ */
 declare const numberFormat: (number: number, digits: number) => string;
+/**
+ * Replaces a portion of a string with replacement text from a specified index.
+ * @param text The text to process.
+ * @param start The start index to work from.
+ * @param size The size of the text to replace.
+ * @param replacementText The replacement text.
+ * @returns {string} The changed text.
+ */
 declare const stringIndexReplace: (text: string, start: number, size: number, replacementText: string) => string;
+/**
+ * Returns all words starting with capital chars.
+ * @param text The text to process.
+ * @returns {string} The changed text.
+ */
 declare const stringInitCap: (text: string) => string;
+/**
+ * Returns a string with the requested number of characters, starting from the left.
+ * @param text The text to process.
+ * @param size The size of the text to return.
+ * @returns {string} The resulting text.
+ */
 declare const stringLeft: (text: string, size: number) => string;
+/**
+ * Returns a substring from the original string.
+ * @param text The text to process.
+ * @param start The start index to work from.
+ * @param size The size of the text to return.
+ * @returns {string} The resulting text.
+ */
 declare const stringMiddle: (text: string, start: number, size: number) => string;
+/**
+ * Returns a string with the requested number of characters, starting from the right.
+ * @param text The text to process.
+ * @param size The size of the text to return.
+ * @returns {string} The resulting text.
+ */
 declare const stringRight: (text: string, size: number) => string;
+/**
+ * Returns the string without leading or trailing spaces.
+ * @param textString The text to process.
+ * @returns {string} The resulting trimmed string.
+ */
 declare const stringTrim: (textString: string) => string;
+/**
+ * Returns the number of words in the text string.
+ * @param text The text to process
+ * @returns {number} The word count.
+ */
 declare const stringWordCount: (text: string) => number;
+/**
+ * Returns the number of words, starting from the left.
+ * @param text The text to process.
+ * @param numberOfWords The number of words to return.
+ * @returns {string} The string with number of words from the left.
+ */
 declare const stringLeftWords: (text: string, numberOfWords: number) => string;
+/**
+ * Returns a substring from the original string.
+ * @param text The text to process.
+ * @param start The start index to work from.
+ * @param numberOfWords The number of words to return.
+ * @returns {string} The resulting text.
+ */
 declare const stringMiddleWords: (text: string, start: number, numberOfWords: number) => string;
+/**
+ * Returns the number of words, starting from the right.
+ * @param text The text to process.
+ * @param numberOfWords The number of words to return.
+ * @returns {string} The string with number of words from the right.
+ */
 declare const stringRightWords: (text: string, numberOfWords: number) => string;
+/**
+ * Filters characters out of from a string and leaves digits, returns the number. Decimal separator is specified as parameter.
+ * @param textString The text to process.
+ * @param decimalSeparator Decimal separator.
+ * @returns {number} The resulting number.
+ */
 declare const stringToNumber: (textString: string, decimalSeparator: string) => number;
+/**
+ * Returns the number of times searchString appears in textString.
+ * @param text The text to process.
+ * @param toSearchFor The string to search for.
+ * @returns {number} The number of times the search string is found in the text.
+ */
 declare const stringPatternCount: (text: string, toSearchFor: string) => number;
+/**
+ * Returns the position of the string to search for, from a certain start position and occurrence.
+ * @param textString The text to process.
+ * @param toSearchFor The string to search.
+ * @param start The start index to search from.
+ * @param occurrence The occurence.
+ * @returns {number} The position of the string to search for.
+ */
 declare const stringPosition: (textString: string, toSearchFor: string, start: number, occurrence: number) => number;
+/**
+ * Replaces a portion of a string with replacement text.
+ * @param text The text to process.
+ * @param searchText The string to search.
+ * @param replacementText The replacement text.
+ * @returns {string} The changed text.
+ */
 declare const stringReplace: (text: string, searchText: string, replacementText: string) => string;
 
 declare const utils_getUnicodeCharacter: typeof getUnicodeCharacter;

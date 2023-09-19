@@ -1,6 +1,6 @@
 {
   "name": "node-servoy",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -15,7 +15,6 @@
     "test:watch": "jest --watch",
     "preversion": "npm test",
     "postversion": "git push && git push --tags",
-    "build:ts": "tsc",
     "build": "tsup"
   },
   "dependencies": {
