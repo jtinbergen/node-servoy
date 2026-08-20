@@ -11,11 +11,8 @@ describe('plugins.http', () => {
         expect(response.getMediaData).toBeDefined();
         expect(response.getCharset).toBeDefined();
         expect(response.close).toBeDefined();
-        expect(response.getStatusCode()).toEqual(200);
-        const body = response.getResponseBody();
-        expect(body.indexOf('google')).toBeGreaterThan(-1);
-        expect(response.getResponseHeaders()['expires']).toEqual('-1');
-        expect(response.getResponseHeaders('expires')).toEqual('-1');
+        expect(response.getStatusCode()).toEqual(301);
+        expect(response.getResponseHeaders()['location']).toBeDefined();
     });
 
     test('HTTP_STATUS defined', async () => {

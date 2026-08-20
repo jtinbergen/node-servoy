@@ -30,10 +30,6 @@ export class JSDataSet {
      * @param json Optional JSON object to initialize the dataset with.
      */
     constructor(json?: JSDatasetParameters) {
-        if (!(this instanceof JSDataSet)) {
-            return new JSDataSet();
-        }
-
         if (json && json.rows && json.columns) {
             this.rows = JSON.parse(json.rows);
             this.columns = JSON.parse(json.columns);
@@ -98,10 +94,13 @@ export class JSDataSet {
 
         if (index && index >= 1 && index <= this.columns.length) {
             this.columns.splice(index - 1, 0, col);
-            return;
+        } else {
+            this.columns.push(col);
         }
 
-        this.columns.push(col);
+        for (let row = 0; row < this.rows.length; row += 1) {
+            this.rows[row].push(null);
+        }
     }
 
     /**
@@ -115,22 +114,23 @@ export class JSDataSet {
             index = -1;
         }
 
+        if (!array) {
+            return;
+        }
+
         if (index >= 1 && index <= this.rows.length) {
             this.rows.splice(index - 1, 0, array);
             return;
         }
 
-        if (array) {
-            for (let i = 0; i < array.length; i += 1) {
-                const type = this.getColumnType(i + 1);
-                if (type === JSColumn.NUMBER) {
-                    array[i] =
-                        array[i] && typeof array[i] !== 'number' ? parseFloat(array[i]) : array[i];
-                }
+        for (let i = 0; i < array.length; i += 1) {
+            const type = this.getColumnType(i + 1);
+            if (type === JSColumn.NUMBER) {
+                array[i] = array[i] && typeof array[i] !== 'number' ? parseFloat(array[i]) : array[i];
             }
-
-            this.rows.push(array);
         }
+
+        this.rows.push(array);
     }
 
     /**
@@ -181,7 +181,7 @@ export class JSDataSet {
             ).toFixed()}</td>`;
             for (let col = 0; col < this.columns.length; col += 1) {
                 let value = this.rows[row][col];
-                if (!value) value = '';
+                if (value === null || value === undefined) value = '';
                 html += `<td style="${style}">${value}</td>`;
             }
 
@@ -204,9 +204,7 @@ export class JSDataSet {
         }
 
         for (let i = 0; i < this.rows.length; i += 1) {
-            if (column >= 1 && column <= this.columns.length + 1) {
-                values.push(this.rows[i][column - 1]);
-            }
+            values.push(this.rows[i][column - 1]);
         }
 
         return values;

@@ -1,5 +1,5 @@
 import * as os from 'os';
-import * as uuid from 'uuid';
+import { randomUUID } from 'crypto';
 import { spawn } from 'child_process';
 import { LOGGINGLEVEL, APPLICATION_TYPES } from './constants';
 
@@ -139,7 +139,7 @@ const getTimeStamp = (): Date => new Date();
  * @returns String and byte array representing an UUID.
  */
 const getUUID = (arg: string): { toString: () => string; toBytes: () => ArrayBuffer } => {
-    const uuidString = arg || uuid.v4();
+    const uuidString = arg || randomUUID();
     const uuidBuffer = Buffer.from(uuidString);
     return {
         toString: () => uuidString,

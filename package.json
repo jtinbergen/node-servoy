@@ -10,6 +10,9 @@
   "repository": "https://github.com/jtinbergen/node-servoy.git",
   "author": "jaapjan@tinbergen.net",
   "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
@@ -19,17 +22,15 @@
   },
   "dependencies": {
     "open": "^7.0.0",
-    "pg": "^8.11.3",
-    "ts-jest": "^29.1.0",
-    "ts-node": "^9.1.1",
-    "tslint": "^6.1.3",
-    "tsup": "^7.2.0",
-    "typescript": "^4.1.5",
-    "uuid": "^3.3.2"
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@types/jest": "^29.5.4",
     "@types/pg": "^8.10.2",
-    "@types/uuid": "^9.0.3"
+    "ts-jest": "^29.1.0",
+    "ts-node": "^9.1.1",
+    "tslint": "^6.1.3",
+    "tsup": "^7.2.0",
+    "typescript": "^4.1.5"
   }
 }
