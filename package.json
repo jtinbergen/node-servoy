@@ -18,7 +18,8 @@
     "test:watch": "jest --watch",
     "preversion": "npm test",
     "postversion": "git push && git push --tags",
-    "build": "tsup"
+    "build": "tsup",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "open": "^7.0.0",
