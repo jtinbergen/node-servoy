@@ -28,8 +28,8 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/index.ts
-var src_exports = {};
-__export(src_exports, {
+var index_exports = {};
+__export(index_exports, {
   DatabaseManager: () => DatabaseManager,
   JSColumn: () => JSColumn,
   JSDataSet: () => JSDataSet,
@@ -42,7 +42,7 @@ __export(src_exports, {
   plugins: () => plugins,
   utils: () => utils_exports
 });
-module.exports = __toCommonJS(src_exports);
+module.exports = __toCommonJS(index_exports);
 
 // src/globals.ts
 var globals_exports = {};
@@ -105,7 +105,7 @@ var ColumnInfo = class {
     this.type = type2 || 11 /* TEXT */;
   }
 };
-var JSDataSet = class _JSDataSet {
+var JSDataSet = class {
   /**
    * Creates a new instance of the JSDataSet class.
    * @param json Optional JSON object to initialize the dataset with.
@@ -114,9 +114,6 @@ var JSDataSet = class _JSDataSet {
     this.rowIndex = 0;
     this.rows = [];
     this.columns = [];
-    if (!(this instanceof _JSDataSet)) {
-      return new _JSDataSet();
-    }
     if (json && json.rows && json.columns) {
       this.rows = JSON.parse(json.rows);
       this.columns = JSON.parse(json.columns);
@@ -173,9 +170,12 @@ var JSDataSet = class _JSDataSet {
     const col = new ColumnInfo({ name: name || "unnamed", type: type2 });
     if (index && index >= 1 && index <= this.columns.length) {
       this.columns.splice(index - 1, 0, col);
-      return;
+    } else {
+      this.columns.push(col);
     }
-    this.columns.push(col);
+    for (let row = 0; row < this.rows.length; row += 1) {
+      this.rows[row].push(null);
+    }
   }
   /**
    * Add a row to the dataset.
@@ -187,19 +187,20 @@ var JSDataSet = class _JSDataSet {
       array = index;
       index = -1;
     }
+    if (!array) {
+      return;
+    }
     if (index >= 1 && index <= this.rows.length) {
       this.rows.splice(index - 1, 0, array);
       return;
     }
-    if (array) {
-      for (let i = 0; i < array.length; i += 1) {
-        const type2 = this.getColumnType(i + 1);
-        if (type2 === 7 /* NUMBER */) {
-          array[i] = array[i] && typeof array[i] !== "number" ? parseFloat(array[i]) : array[i];
-        }
+    for (let i = 0; i < array.length; i += 1) {
+      const type2 = this.getColumnType(i + 1);
+      if (type2 === 7 /* NUMBER */) {
+        array[i] = array[i] && typeof array[i] !== "number" ? parseFloat(array[i]) : array[i];
       }
-      this.rows.push(array);
     }
+    this.rows.push(array);
   }
   /**
    * Removes a row from the dataset at the specified index.
@@ -238,8 +239,7 @@ var JSDataSet = class _JSDataSet {
       html += `<td style="${style} font-style: italic color: gray">${(row + 1).toFixed()}</td>`;
       for (let col = 0; col < this.columns.length; col += 1) {
         let value = this.rows[row][col];
-        if (!value)
-          value = "";
+        if (value === null || value === void 0) value = "";
         html += `<td style="${style}">${value}</td>`;
       }
       html += "</tr>";
@@ -258,9 +258,7 @@ var JSDataSet = class _JSDataSet {
       return null;
     }
     for (let i = 0; i < this.rows.length; i += 1) {
-      if (column >= 1 && column <= this.columns.length + 1) {
-        values.push(this.rows[i][column - 1]);
-      }
+      values.push(this.rows[i][column - 1]);
     }
     return values;
   }
@@ -327,10 +325,8 @@ var JSDataSet = class _JSDataSet {
    */
   sort(col, sort_direction) {
     this.rows = this.rows.sort((a, b) => {
-      if (a[col - 1] < b[col - 1])
-        return sort_direction ? -1 : 1;
-      if (a[col - 1] > b[col - 1])
-        return sort_direction ? 1 : -1;
+      if (a[col - 1] < b[col - 1]) return sort_direction ? -1 : 1;
+      if (a[col - 1] > b[col - 1]) return sort_direction ? 1 : -1;
       return 0;
     });
   }
@@ -694,7 +690,7 @@ __export(application_exports, {
   sleep: () => sleep
 });
 var os = __toESM(require("os"));
-var uuid = __toESM(require("uuid"));
+var import_crypto = require("crypto");
 var import_child_process = require("child_process");
 
 // src/constants.ts
@@ -774,7 +770,7 @@ var getSolutionName = () => "node-servoy";
 var getSolutionRelease = () => 1;
 var getTimeStamp = () => /* @__PURE__ */ new Date();
 var getUUID = (arg) => {
-  const uuidString = arg || uuid.v4();
+  const uuidString = arg || (0, import_crypto.randomUUID)();
   const uuidBuffer = Buffer.from(uuidString);
   return {
     toString: () => uuidString,

@@ -9,11 +9,7 @@ declare const globals_format: typeof format;
 declare const globals_sql: typeof sql;
 declare const globals_sqlTextField: typeof sqlTextField;
 declare namespace globals {
-  export {
-    globals_format as format,
-    globals_sql as sql,
-    globals_sqlTextField as sqlTextField,
-  };
+  export { globals_format as format, globals_sql as sql, globals_sqlTextField as sqlTextField };
 }
 
 declare enum JSColumn {
@@ -349,10 +345,7 @@ declare const constants_APPLICATION_TYPES: typeof APPLICATION_TYPES;
 type constants_LOGGINGLEVEL = LOGGINGLEVEL;
 declare const constants_LOGGINGLEVEL: typeof LOGGINGLEVEL;
 declare namespace constants {
-  export {
-    constants_APPLICATION_TYPES as APPLICATION_TYPES,
-    constants_LOGGINGLEVEL as LOGGINGLEVEL,
-  };
+  export { constants_APPLICATION_TYPES as APPLICATION_TYPES, constants_LOGGINGLEVEL as LOGGINGLEVEL };
 }
 
 /**
@@ -465,24 +458,7 @@ declare const application_isInDeveloper: typeof isInDeveloper;
 declare const application_output: typeof output;
 declare const application_sleep: typeof sleep;
 declare namespace application {
-  export {
-    application_executeProgram as executeProgram,
-    application_executeProgramInBackground as executeProgramInBackground,
-    application_exit as exit,
-    application_getApplicationType as getApplicationType,
-    application_getHostName as getHostName,
-    application_getOSName as getOSName,
-    application_getServerTimeStamp as getServerTimeStamp,
-    application_getServerURL as getServerURL,
-    application_getSolutionName as getSolutionName,
-    application_getSolutionRelease as getSolutionRelease,
-    application_getTimeStamp as getTimeStamp,
-    application_getUUID as getUUID,
-    application_getVersion as getVersion,
-    application_isInDeveloper as isInDeveloper,
-    application_output as output,
-    application_sleep as sleep,
-  };
+  export { application_executeProgram as executeProgram, application_executeProgramInBackground as executeProgramInBackground, application_exit as exit, application_getApplicationType as getApplicationType, application_getHostName as getHostName, application_getOSName as getOSName, application_getServerTimeStamp as getServerTimeStamp, application_getServerURL as getServerURL, application_getSolutionName as getSolutionName, application_getSolutionRelease as getSolutionRelease, application_getTimeStamp as getTimeStamp, application_getUUID as getUUID, application_getVersion as getVersion, application_isInDeveloper as isInDeveloper, application_output as output, application_sleep as sleep };
 }
 
 /**
@@ -618,24 +594,7 @@ declare const utils_stringToNumber: typeof stringToNumber;
 declare const utils_stringTrim: typeof stringTrim;
 declare const utils_stringWordCount: typeof stringWordCount;
 declare namespace utils {
-  export {
-    utils_getUnicodeCharacter as getUnicodeCharacter,
-    utils_numberFormat as numberFormat,
-    utils_stringIndexReplace as stringIndexReplace,
-    utils_stringInitCap as stringInitCap,
-    utils_stringLeft as stringLeft,
-    utils_stringLeftWords as stringLeftWords,
-    utils_stringMiddle as stringMiddle,
-    utils_stringMiddleWords as stringMiddleWords,
-    utils_stringPatternCount as stringPatternCount,
-    utils_stringPosition as stringPosition,
-    utils_stringReplace as stringReplace,
-    utils_stringRight as stringRight,
-    utils_stringRightWords as stringRightWords,
-    utils_stringToNumber as stringToNumber,
-    utils_stringTrim as stringTrim,
-    utils_stringWordCount as stringWordCount,
-  };
+  export { utils_getUnicodeCharacter as getUnicodeCharacter, utils_numberFormat as numberFormat, utils_stringIndexReplace as stringIndexReplace, utils_stringInitCap as stringInitCap, utils_stringLeft as stringLeft, utils_stringLeftWords as stringLeftWords, utils_stringMiddle as stringMiddle, utils_stringMiddleWords as stringMiddleWords, utils_stringPatternCount as stringPatternCount, utils_stringPosition as stringPosition, utils_stringReplace as stringReplace, utils_stringRight as stringRight, utils_stringRightWords as stringRightWords, utils_stringToNumber as stringToNumber, utils_stringTrim as stringTrim, utils_stringWordCount as stringWordCount };
 }
 
 declare const db: any[];
@@ -644,10 +603,7 @@ declare const mem: any[];
 declare const datasources_db: typeof db;
 declare const datasources_mem: typeof mem;
 declare namespace datasources {
-  export {
-    datasources_db as db,
-    datasources_mem as mem,
-  };
+  export { datasources_db as db, datasources_mem as mem };
 }
 
 declare class HttpResponse {
@@ -754,12 +710,7 @@ declare const http_createNewHttpClient: typeof createNewHttpClient;
 declare const http_getMediaData: typeof getMediaData;
 declare const http_getPageData: typeof getPageData;
 declare namespace http {
-  export {
-    http_HTTP_STATUS as HTTP_STATUS,
-    http_createNewHttpClient as createNewHttpClient,
-    http_getMediaData as getMediaData,
-    http_getPageData as getPageData,
-  };
+  export { http_HTTP_STATUS as HTTP_STATUS, http_createNewHttpClient as createNewHttpClient, http_getMediaData as getMediaData, http_getPageData as getPageData };
 }
 
 type MailTransporter = {
@@ -789,17 +740,7 @@ declare const mail_sendBulkMail: typeof sendBulkMail;
 declare const mail_sendMail: typeof sendMail;
 declare const mail_setImplementation: typeof setImplementation;
 declare namespace mail {
-  export {
-    mail_createBinaryAttachment as createBinaryAttachment,
-    mail_getLastSendMailExceptionMsg as getLastSendMailExceptionMsg,
-    mail_getMailMessage as getMailMessage,
-    mail_getPlainMailAddresses as getPlainMailAddresses,
-    mail_isValidEmailAddress as isValidEmailAddress,
-    mail_receiveMail as receiveMail,
-    mail_sendBulkMail as sendBulkMail,
-    mail_sendMail as sendMail,
-    mail_setImplementation as setImplementation,
-  };
+  export { mail_createBinaryAttachment as createBinaryAttachment, mail_getLastSendMailExceptionMsg as getLastSendMailExceptionMsg, mail_getMailMessage as getMailMessage, mail_getPlainMailAddresses as getPlainMailAddresses, mail_isValidEmailAddress as isValidEmailAddress, mail_receiveMail as receiveMail, mail_sendBulkMail as sendBulkMail, mail_sendMail as sendMail, mail_setImplementation as setImplementation };
 }
 
 declare class JSFile {
@@ -891,44 +832,14 @@ declare const file_streamFilesToServer: typeof streamFilesToServer;
 declare const file_writeFile: typeof writeFile;
 declare const file_writeTXTFile: typeof writeTXTFile;
 declare namespace file {
-  export {
-    file_JSFile as JSFile,
-    file_appendToTXTFile as appendToTXTFile,
-    file_convertToJSFile as convertToJSFile,
-    file_convertToRemoteJSFile as convertToRemoteJSFile,
-    file_copyFile as copyFile,
-    file_copyFolder as copyFolder,
-    file_createFile as createFile,
-    file_createFolder as createFolder,
-    file_createTempFile as createTempFile,
-    file_deleteFile as deleteFile,
-    file_deleteFolder as deleteFolder,
-    file_getDefaultUploadLocation as getDefaultUploadLocation,
-    file_getDesktopFolder as getDesktopFolder,
-    file_getDiskList as getDiskList,
-    file_getFileSize as getFileSize,
-    file_getFolderContents as getFolderContents,
-    file_getHomeFolder as getHomeFolder,
-    file_getModificationDate as getModificationDate,
-    file_getRemoteFolderContents as getRemoteFolderContents,
-    file_moveFile as moveFile,
-    file_openFile as openFile,
-    file_readFile as readFile,
-    file_readTXTFile as readTXTFile,
-    file_streamFilesFromServer as streamFilesFromServer,
-    file_streamFilesToServer as streamFilesToServer,
-    file_writeFile as writeFile,
-    file_writeTXTFile as writeTXTFile,
-  };
+  export { file_JSFile as JSFile, file_appendToTXTFile as appendToTXTFile, file_convertToJSFile as convertToJSFile, file_convertToRemoteJSFile as convertToRemoteJSFile, file_copyFile as copyFile, file_copyFolder as copyFolder, file_createFile as createFile, file_createFolder as createFolder, file_createTempFile as createTempFile, file_deleteFile as deleteFile, file_deleteFolder as deleteFolder, file_getDefaultUploadLocation as getDefaultUploadLocation, file_getDesktopFolder as getDesktopFolder, file_getDiskList as getDiskList, file_getFileSize as getFileSize, file_getFolderContents as getFolderContents, file_getHomeFolder as getHomeFolder, file_getModificationDate as getModificationDate, file_getRemoteFolderContents as getRemoteFolderContents, file_moveFile as moveFile, file_openFile as openFile, file_readFile as readFile, file_readTXTFile as readTXTFile, file_streamFilesFromServer as streamFilesFromServer, file_streamFilesToServer as streamFilesToServer, file_writeFile as writeFile, file_writeTXTFile as writeTXTFile };
 }
 
 declare const executeSQL: (serverName: string, table: string, sql: string) => Promise<boolean>;
 
 declare const rawSQL_executeSQL: typeof executeSQL;
 declare namespace rawSQL {
-  export {
-    rawSQL_executeSQL as executeSQL,
-  };
+  export { rawSQL_executeSQL as executeSQL };
 }
 
 declare enum TokenType {
@@ -958,10 +869,7 @@ declare const read: (code: string) => any;
 declare const parser_read: typeof read;
 declare const parser_tokenToString: typeof tokenToString;
 declare namespace parser {
-  export {
-    parser_read as read,
-    parser_tokenToString as tokenToString,
-  };
+  export { parser_read as read, parser_tokenToString as tokenToString };
 }
 
 declare const plugins: {
