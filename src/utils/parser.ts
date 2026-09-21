@@ -18,7 +18,7 @@ enum TokenType {
 
 type Token = {
     type: TokenType;
-    value?: any;
+    value?: string | number | boolean;
 };
 
 type State = {
@@ -27,7 +27,7 @@ type State = {
 };
 
 const tokenizer = (code: string) => {
-    const tokens = [];
+    const tokens: Token[] = [];
     let pos = 0;
     const parseIdentifier = () => {
         let value = '';
@@ -202,12 +202,12 @@ const tokenToString = (token: Token) => {
     return '';
 };
 
-const expectIdentifier = (state: State) => {
+const expectIdentifier = (state: State): string => {
     if (state.tokens[state.pos].type !== TokenType.IDENTIFIER) {
         throw new Error('Expected identifier');
     }
 
-    return state.tokens[state.pos++].value;
+    return state.tokens[state.pos++].value as string;
 };
 
 const expectType = (state: State, type: TokenType) => {
@@ -230,7 +230,7 @@ const eatWhitespace = (state: State) => {
 const expectValue = (state: State): any => {
     if (nextIs(state, TokenType.BRACKET_OPEN)) {
         expectType(state, TokenType.BRACKET_OPEN);
-        const array = [];
+        const array: any[] = [];
         let continueLoop = true;
         while (continueLoop && !nextIs(state, TokenType.BRACKET_CLOSE)) {
             array.push(expectValue(state));
@@ -262,9 +262,10 @@ const expectValue = (state: State): any => {
 
 const expectObject = (state: State) => {
     expectType(state, TokenType.CURLY_OPEN);
-    const object: any = {};
+    const object: Record<string, any> = {};
     let continueLoop = true;
     while (continueLoop && !nextIs(state, TokenType.CURLY_CLOSE)) {
+        eatWhitespace(state);
         const propertyName = expectIdentifier(state);
         eatWhitespace(state);
         expectType(state, TokenType.COLON);
@@ -287,12 +288,13 @@ const parser = (tokens: Token[]) => {
             .filter((token: Token) => token.type !== TokenType.LINEFEED)
             .filter((token: Token) => token.type !== TokenType.CARRIAGERETURN),
     };
-    const object: any = {};
+    const object: Record<string, any> = {};
     let continueLoop = true;
     if (nextIs(state, TokenType.DOUBLEQUOTE)) {
         expectType(state, TokenType.DOUBLEQUOTE);
     }
     while (continueLoop) {
+        eatWhitespace(state);
         const propertyName = expectIdentifier(state);
         eatWhitespace(state);
         expectType(state, TokenType.COLON);
@@ -310,9 +312,9 @@ const parser = (tokens: Token[]) => {
     return object;
 };
 
-const read = (code: string): any => {
+const read = <T = any>(code: string): T => {
     const tokens = tokenizer(code);
-    return parser(tokens);
+    return parser(tokens) as T;
 };
 
 export { tokenToString, read };

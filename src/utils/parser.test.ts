@@ -18,4 +18,15 @@ uuid:"AA0508CB-6A04-46AF-ABA1-8B4F4C2B3B88"`;
         expect(result.items.length).toBe(1);
         expect(result.items[0].uuid).toBe('8613CA5A-FEC2-4556-9197-CA7525F9E02D');
     });
+
+    test('tolerates whitespace around colons', () => {
+        const result = read('foo : "bar", baz : 1');
+        expect(result).toEqual({ foo: 'bar', baz: 1 });
+    });
+
+    test('supports a generic return type', () => {
+        type Foo = { foo: string };
+        const result = read<Foo>('foo:"bar"');
+        expect(result.foo).toBe('bar');
+    });
 });
